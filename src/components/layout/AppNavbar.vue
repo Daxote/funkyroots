@@ -35,8 +35,8 @@ const closeMobileMenu = () => {
 
 const navigateToSection = async (hash) => {
   closeMobileMenu()
-  if (route.path !== '/') {
-    await router.push({ path: '/', hash })
+  if (route.path !== '/test') {
+    await router.push({ path: '/test', hash })
   } else {
     const target = document.querySelector(hash)
     if (target) {
@@ -66,7 +66,7 @@ onUnmounted(() => {
     <div class="container-editorial app-navbar__inner">
       <!-- Identidad Oficial de Marca (Isotipo + Logotipo sin fondo) -->
       <RouterLink
-        to="/"
+        to="/test"
         class="app-navbar__brand"
         aria-label="FunkyRoots Estudios — Ir al inicio"
         @click="closeMobileMenu"
@@ -88,7 +88,7 @@ onUnmounted(() => {
         <ul class="app-navbar__list">
           <li v-for="item in navItems" :key="item.code">
             <a
-              :href="`/${item.hash}`"
+              :href="`/test${item.hash}`"
               class="app-navbar__link"
               @click.prevent="navigateToSection(item.hash)"
             >
@@ -149,7 +149,7 @@ onUnmounted(() => {
         <ul class="app-navbar__drawer-list">
           <li v-for="item in navItems" :key="item.code">
             <a
-              :href="`/${item.hash}`"
+              :href="`/test${item.hash}`"
               class="app-navbar__drawer-link"
               @click.prevent="navigateToSection(item.hash)"
             >

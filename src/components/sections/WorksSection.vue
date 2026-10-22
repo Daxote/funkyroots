@@ -52,7 +52,7 @@ defineProps({
               <div class="work-item__credit-block">
                 <span class="font-mono work-item__credit-label">INTÉRPRETE // PROYECTO</span>
                 <RouterLink
-                  :to="`/artistas/${work.artistSlug}`"
+                  :to="`/test/artistas/${work.artistSlug}`"
                   class="work-item__artist-link font-display"
                 >
                   <span>{{ work.artistName }}</span>

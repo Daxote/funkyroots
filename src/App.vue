@@ -1,27 +1,32 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { computed } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
 import AppNavbar from '@/components/layout/AppNavbar.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import BrandIntroSplash from '@/components/layout/BrandIntroSplash.vue'
+
+const route = useRoute()
+const isMaintenanceRoute = computed(() => Boolean(route.meta?.isMaintenance))
 </script>
 
 <template>
   <div class="app-shell">
-    <!-- Animación breve inicial con el Isotipo y Logotipo Oficial de FunkyRoots -->
-    <BrandIntroSplash />
+    <!-- En la ruta oculta (/test) mostramos la animación de bienvenida, el Navbar y el Footer -->
+    <template v-if="!isMaintenanceRoute">
+      <BrandIntroSplash />
 
-    <!-- Enlace de Salto Directo para Accesibilidad por Teclado -->
-    <a href="#main-content" class="skip-link">
-      SALTAR AL CONTENIDO PRINCIPAL
-    </a>
+      <a href="#main-content" class="skip-link">
+        SALTAR AL CONTENIDO PRINCIPAL
+      </a>
 
-    <AppNavbar />
+      <AppNavbar />
+    </template>
 
     <main id="main-content" class="app-shell__main">
       <RouterView />
     </main>
 
-    <AppFooter />
+    <AppFooter v-if="!isMaintenanceRoute" />
   </div>
 </template>
 

@@ -1,31 +1,41 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import MaintenanceView from '@/views/MaintenanceView.vue'
 import HomeView from '@/views/HomeView.vue'
 
 /**
- * Enrutamiento Clean con preservación de posición de scroll:
- * - Si existe `savedPosition` (botón Atrás/Adelante), restaura la coordenada exacta.
- * - Si regresamos a '/' desde una vista de artista y hemos guardado el último scroll de la landing,
- *   restaura esa posición para no perder el contexto en la grilla de artistas.
- * - Si hay un `to.hash` (ej. `/#servicios`), desplaza suavemente al ancla.
+ * Enrutamiento Clean con modo Mantención en '/' y vista previa completa en '/test':
+ * - '/' -> Pantalla oficial de sitio en construcción (MaintenanceView)
+ * - '/test' -> Proyecto completo (HomeView) para revisión interna y colaboradores
+ * - '/test/artistas/:slug' (y alias '/artistas/:slug') -> Vista dedicada de artista
  */
-let lastHomeScrollTop = 0
+let lastTestHomeScrollTop = 0
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView,
+    name: 'maintenance',
+    component: MaintenanceView,
     meta: {
-      title: 'Funky Roots // Editorial Sound Studio & Sello Independiente'
+      title: 'FunkyRoots Estudios // Sitio en construcción',
+      isMaintenance: true
     }
   },
   {
-    path: '/artistas/:slug',
+    path: '/test',
+    name: 'home',
+    component: HomeView,
+    meta: {
+      title: 'FunkyRoots Estudios // Preview Colaboradores'
+    }
+  },
+  {
+    path: '/test/artistas/:slug',
+    alias: ['/artistas/:slug'],
     name: 'artist-detail',
     component: () => import('@/views/ArtistDetailView.vue'),
     props: true,
     meta: {
-      title: 'Expediente de Artista // Funky Roots'
+      title: 'Expediente de Artista // FunkyRoots Estudios'
     }
   }
 ]
@@ -45,9 +55,9 @@ const router = createRouter({
       }
     }
 
-    if (to.name === 'home' && from.name === 'artist-detail' && lastHomeScrollTop > 0) {
+    if (to.name === 'home' && from.name === 'artist-detail' && lastTestHomeScrollTop > 0) {
       return {
-        top: lastHomeScrollTop,
+        top: lastTestHomeScrollTop,
         left: 0
       }
     }
@@ -58,7 +68,7 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   if (typeof window !== 'undefined' && from.name === 'home') {
-    lastHomeScrollTop = window.scrollY || 0
+    lastTestHomeScrollTop = window.scrollY || 0
   }
 })
 

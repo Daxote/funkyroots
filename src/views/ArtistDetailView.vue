@@ -36,7 +36,7 @@ watchEffect(() => {
 })
 
 const goBackToRoster = () => {
-  router.push('/')
+  router.push('/test')
 }
 </script>
 
@@ -243,7 +243,7 @@ const goBackToRoster = () => {
         <div class="container-editorial">
           <div class="artist-detail__more-header">
             <span class="font-mono artist-detail__section-tag">CONTINUAR EXPLORACIÓN // ROSTER</span>
-            <BaseButton variant="ghost" to="/">
+            <BaseButton variant="ghost" to="/test">
               ← VOLVER A LA PORTADA PRINCIPAL
             </BaseButton>
           </div>
@@ -252,7 +252,7 @@ const goBackToRoster = () => {
             <RouterLink
               v-for="other in relatedArtists"
               :key="other.id"
-              :to="`/artistas/${other.slug}`"
+              :to="`/test/artistas/${other.slug}`"
               class="artist-detail__more-card p-6"
             >
               <span class="font-mono artist-detail__more-code">{{ other.index }}</span>
@@ -274,7 +274,7 @@ const goBackToRoster = () => {
         Verifica la dirección o regresa al catálogo principal de artistas de FunkyRoots Estudios.
       </p>
       <div>
-        <BaseButton variant="primary" to="/">
+        <BaseButton variant="primary" to="/test">
           VOLVER AL INICIO
         </BaseButton>
       </div>

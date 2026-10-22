@@ -33,7 +33,7 @@ defineProps({
           class="artist-card"
         >
           <RouterLink
-            :to="`/artistas/${artist.slug}`"
+            :to="`/test/artistas/${artist.slug}`"
             class="artist-card__link"
             :aria-label="`Explorar perfil completo, discografía y videos de ${artist.name}`"
           >

@@ -17,7 +17,7 @@ const currentYear = new Date().getFullYear()
       <div class="app-footer__grid">
         <!-- Columna 1: Identidad e Imagotipo Oficial -->
         <div class="app-footer__brand-col">
-          <RouterLink to="/" class="app-footer__logo-link" aria-label="FunkyRoots Estudios — Inicio">
+          <RouterLink to="/test" class="app-footer__logo-link" aria-label="FunkyRoots Estudios — Inicio">
             <img
               :src="imagotipoBlancoUrl"
               alt="FunkyRoots Estudios"
@@ -38,7 +38,7 @@ const currentYear = new Date().getFullYear()
           <ul class="app-footer__list">
             <li v-for="artist in artists" :key="artist.id">
               <RouterLink
-                :to="`/artistas/${artist.slug}`"
+                :to="`/test/artistas/${artist.slug}`"
                 class="app-footer__link"
               >
                 <span class="font-mono app-footer__link-code">{{ artist.index }}</span>
