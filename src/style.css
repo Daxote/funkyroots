@@ -1,0 +1,291 @@
+/* ==========================================================================
+   FUNKY ROOTS — SISTEMA DE DISEÑO (UI UX PRO MAX)
+   Arquetipo: Editorial Sound Studio & Dark Minimal
+   Stack: CSS Puro con Custom Properties y Utilidades Semánticas (Sin Tailwind ni Bootstrap)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. PREPARACIÓN TIPOGRÁFICA (ADOBE FONTS — AREA VARIABLE)
+   --------------------------------------------------------------------------
+   Para activar 'Area Variable' desde Adobe Fonts (Typekit):
+   1. Incluir <link rel="stylesheet" href="https://use.typekit.net/TU_KIT_ID.css"> en index.html
+   2. O descomentar el bloque @font-face si se auto-hospeda el archivo .woff2:
+
+   @font-face {
+     font-family: 'Area Variable';
+     src: url('/fonts/AreaVariable.woff2') format('woff2-variations');
+     font-weight: 100 900;
+     font-style: normal;
+     font-display: swap;
+   }
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Paleta de Colores Oficial — Funky Roots */
+  --brand-pine: #355A4C;        /* Verde Pino Urbano — Identidad principal, bloques destacados y acentos */
+  --brand-pine-rgb: 53, 90, 76;
+
+  --brand-sage: #6F8F7A;        /* Verde Claro Salvia — Acentos secundarios, bordes activos dark, indicadores */
+  --brand-sage-rgb: 111, 143, 122;
+
+  --brand-dark: #141615;        /* Carbón Profundo — Fondo primario secciones Dark y vista detalle artista (Prohibido #000000) */
+  --brand-dark-rgb: 20, 22, 21;
+
+  --brand-graphite: #2E2E2E;    /* Gris Grafito — Superficies tarjetas Dark y texto primario secciones claras */
+  --brand-graphite-rgb: 46, 46, 46;
+
+  --brand-bone: #F5F5F0;        /* Blanco Hueso — Fondo primario secciones claras y texto principal Dark */
+  --brand-bone-rgb: 245, 245, 240;
+
+  --brand-beige: #E6E0D8;       /* Beige Suave — Superficies tarjetas claras y texto secundario/muted Dark */
+  --brand-beige-rgb: 230, 224, 216;
+
+  --brand-terracotta: #B8573C;  /* Terracota Profundo — Botones CTA primarios, controles reproducción y acentos cálidos */
+  --brand-terracotta-rgb: 184, 87, 60;
+
+  --brand-ochre: #C1A875;       /* Ocre Moderno — Etiquetas de sellos discográficos, años, roles técnicos y badges */
+  --brand-ochre-rgb: 193, 168, 117;
+
+  /* Bordes Técnicos Sutiles de 1px */
+  --border-light-subtle: rgba(46, 46, 46, 0.12);   /* border-[#2E2E2E]/10 equivalente en secciones claras */
+  --border-light-strong: rgba(46, 46, 46, 0.24);
+  --border-dark-subtle: rgba(245, 245, 240, 0.10); /* border-[#F5F5F0]/10 equivalente en secciones oscuras */
+  --border-dark-strong: rgba(245, 245, 240, 0.22);
+
+  /* Sistema Tipográfico */
+  --font-display: 'Poppins', 'Area Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Escala Matemática de Espaciado (Base 4px / 8px exclusiva) */
+  --space-1: 0.25rem;   /* 4px  */
+  --space-2: 0.5rem;    /* 8px  */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px (p-4) */
+  --space-6: 1.5rem;    /* 24px (p-6 / gap-6) */
+  --space-8: 2rem;      /* 32px (p-8 / gap-8) */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px (py-16) */
+  --space-24: 6rem;     /* 96px (py-24) */
+
+  /* Dimensiones de Layout y Accesibilidad */
+  --container-max: 1360px;
+  --navbar-height: 80px;
+  --touch-target-min: 44px;
+
+  /* Transiciones Contextuales (UI UX Pro Max) */
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 180ms;
+  --duration-base: 280ms;
+  --duration-slow: 500ms;
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET & BASE ACCESIBLE
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--brand-dark);
+  color: var(--brand-bone);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.6;
+  background-color: var(--brand-dark);
+  color: var(--brand-bone);
+  overflow-x: hidden;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* Foco Visible Estandarizado (ring-2 equivalente accesible WCAG AA) */
+:focus-visible {
+  outline: 2px solid var(--brand-terracotta);
+  outline-offset: 3px;
+}
+
+.theme-light :focus-visible {
+  outline: 2px solid var(--brand-pine);
+  outline-offset: 3px;
+}
+
+/* Skip to content para navegación por teclado */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: var(--space-4);
+  z-index: 9999;
+  padding: var(--space-3) var(--space-6);
+  background-color: var(--brand-terracotta);
+  color: var(--brand-bone);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid var(--brand-bone);
+  transition: top var(--duration-fast) var(--ease-editorial);
+}
+
+.skip-link:focus-visible {
+  top: var(--space-4);
+}
+
+/* --------------------------------------------------------------------------
+   3. TEMAS DE SECCIÓN (ALTERNANCIA RÍTMICA)
+   -------------------------------------------------------------------------- */
+.theme-dark {
+  background-color: var(--brand-dark);
+  color: var(--brand-bone);
+}
+
+.theme-graphite {
+  background-color: var(--brand-graphite);
+  color: var(--brand-bone);
+}
+
+.theme-light {
+  background-color: var(--brand-bone);
+  color: var(--brand-graphite);
+}
+
+.theme-beige {
+  background-color: var(--brand-beige);
+  color: var(--brand-graphite);
+}
+
+.theme-pine {
+  background-color: var(--brand-pine);
+  color: var(--brand-bone);
+}
+
+/* --------------------------------------------------------------------------
+   4. CONTENEDORES Y ESCALA DE ESPACIADO MATEMÁTICA (4px / 8px)
+   -------------------------------------------------------------------------- */
+.container-editorial {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .container-editorial {
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+/* Utilidades de Espaciado Matemático */
+.p-4 { padding: var(--space-4); }
+.p-6 { padding: var(--space-6); }
+.p-8 { padding: var(--space-8); }
+.py-16 { padding-top: var(--space-16); padding-bottom: var(--space-16); }
+.py-24 { padding-top: var(--space-24); padding-bottom: var(--space-24); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+
+/* --------------------------------------------------------------------------
+   5. JERARQUÍA TIPOGRÁFICA Y UTILIDADES TÉCNICAS
+   -------------------------------------------------------------------------- */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+
+.technical-index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Delimitadores Técnicos de 1px */
+.border-subtle-dark {
+  border: 1px solid var(--border-dark-subtle);
+}
+
+.border-subtle-light {
+  border: 1px solid var(--border-light-subtle);
+}
+
+.divider-technical-dark {
+  height: 1px;
+  width: 100%;
+  background-color: var(--border-dark-subtle);
+}
+
+.divider-technical-light {
+  height: 1px;
+  width: 100%;
+  background-color: var(--border-light-subtle);
+}
+
+/* --------------------------------------------------------------------------
+   6. REDUCED MOTION (ACCESIBILIDAD CRÍTICA)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
