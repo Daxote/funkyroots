@@ -31,10 +31,11 @@ export function applyPendingRouteScroll() {
 const routes = [
   {
     path: '/',
+    alias: ['/links', '/linktree'],
     name: 'maintenance',
     component: MaintenanceView,
     meta: {
-      title: 'FunkyRoots Estudios — Sitio en construcción',
+      title: 'FunkyRoots Estudios — Enlaces Oficiales',
       isMaintenance: true
     }
   },
