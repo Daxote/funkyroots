@@ -82,7 +82,6 @@ const socials = [
 ]
 
 const chips = [
-  { id: 'site', title: 'Visitar el sitio', url: '/test', icon: 'site', internal: true },
   { id: 'abril', title: 'ABRIL — Video oficial', url: 'https://www.youtube.com/watch?v=z4UVHULCsA4&ab_channel=FunkyRootsEstudios', icon: 'youtube' },
   { id: 'yt', title: 'Suscríbete a nuestro YouTube', url: 'https://www.youtube.com/channel/UC32wHweWt7hMQT5LAphUDng?sub_confirmation=1', icon: 'youtube' },
   { id: 'drive', title: 'Descarga nuestra música', url: 'https://drive.google.com/drive/folders/1GIgokeoJ_X3IoSdNaoS00GjB2SSp_W9A', icon: 'drive' },
