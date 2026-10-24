@@ -1,10 +1,9 @@
 <script setup>
 import { useParallax } from '@/core/composables/useParallax'
-import BaseBadge from '@/components/ui/BaseBadge.vue'
 
 /**
- * ParallaxBannerSection — Sección de inicio con efecto parallax reactivo (requestAnimationFrame)
- * y manifiesto visual del estudio.
+ * ParallaxBannerSection — Interludio visual con efecto parallax orgánico,
+ * tarjetas redondeadas con desenfoque suave y sin numeraciones ni chips técnicos.
  */
 defineProps({
   manifesto: {
@@ -27,7 +26,6 @@ const { containerRef, offsetY } = useParallax({ speed: 0.2, maxOffset: 100 })
     class="parallax-banner theme-dark py-24"
     aria-labelledby="manifesto-heading"
   >
-    <!-- Capa de Imagen de Fondo con Desplazamiento Parallax -->
     <div class="parallax-banner__backdrop" aria-hidden="true">
       <div
         class="parallax-banner__image"
@@ -40,11 +38,8 @@ const { containerRef, offsetY } = useParallax({ speed: 0.2, maxOffset: 100 })
     </div>
 
     <div class="container-editorial parallax-banner__inner">
-      <div class="parallax-banner__card p-8">
-        <div class="parallax-banner__header">
-          <BaseBadge variant="ochre">{{ manifesto.index }}</BaseBadge>
-          <span class="font-mono parallax-banner__tag">FILOSOFÍA ACÚSTICA &amp; EDITORIAL</span>
-        </div>
+      <div class="parallax-banner__card">
+        <span class="eyebrow-label">Nuestra Esencia</span>
 
         <h2 id="manifesto-heading" class="font-display parallax-banner__title">
           {{ title }}
@@ -54,14 +49,14 @@ const { containerRef, offsetY } = useParallax({ speed: 0.2, maxOffset: 100 })
           “{{ manifesto.quote }}”
         </blockquote>
 
-        <div class="parallax-banner__specs">
+        <div class="parallax-banner__pillars">
           <div
-            v-for="spec in manifesto.specs"
-            :key="spec.code"
-            class="parallax-banner__spec-item p-4"
+            v-for="pillar in manifesto.pillars"
+            :key="pillar.title"
+            class="parallax-banner__pillar"
           >
-            <span class="font-mono parallax-banner__spec-code">{{ spec.code }}</span>
-            <span class="parallax-banner__spec-label">{{ spec.label }}</span>
+            <strong class="font-display parallax-banner__pillar-title">{{ pillar.title }}</strong>
+            <span class="parallax-banner__pillar-label">{{ pillar.label }}</span>
           </div>
         </div>
       </div>
@@ -73,7 +68,6 @@ const { containerRef, offsetY } = useParallax({ speed: 0.2, maxOffset: 100 })
 .parallax-banner {
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid var(--border-dark-subtle);
 }
 
 .parallax-banner__backdrop {
@@ -85,21 +79,21 @@ const { containerRef, offsetY } = useParallax({ speed: 0.2, maxOffset: 100 })
 
 .parallax-banner__image {
   position: absolute;
-  inset: -12% 0;
+  inset: -14% 0;
   background-size: cover;
   background-position: center;
   will-change: transform;
-  filter: grayscale(25%) contrast(1.08);
+  filter: saturate(0.88) contrast(1.06);
 }
 
 .parallax-banner__overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    90deg,
-    rgba(20, 22, 21, 0.94) 0%,
-    rgba(20, 22, 21, 0.82) 55%,
-    rgba(53, 90, 76, 0.58) 100%
+    115deg,
+    rgba(20, 22, 21, 0.92) 0%,
+    rgba(20, 22, 21, 0.74) 52%,
+    rgba(53, 90, 76, 0.55) 100%
   );
 }
 
@@ -110,70 +104,62 @@ const { containerRef, offsetY } = useParallax({ speed: 0.2, maxOffset: 100 })
 
 .parallax-banner__card {
   max-width: 960px;
-  background-color: rgba(20, 22, 21, 0.86);
+  padding: clamp(2rem, 4vw, 3.5rem);
+  background-color: rgba(20, 22, 21, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-dark-strong);
-  border-left: 3px solid var(--brand-pine);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-media);
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
 }
 
-.parallax-banner__header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-}
-
-.parallax-banner__tag {
-  font-size: 0.75rem;
-  color: var(--brand-sage);
-}
-
 .parallax-banner__title {
-  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
-  font-weight: 600;
+  font-size: clamp(1.875rem, 3.4vw, 2.75rem);
+  font-weight: 700;
   color: var(--brand-bone);
 }
 
 .parallax-banner__quote {
-  font-size: clamp(1.125rem, 2vw, 1.375rem);
-  line-height: 1.65;
-  color: var(--brand-beige);
-  font-weight: 400;
+  font-size: clamp(1.125rem, 1.9vw, 1.35rem);
+  line-height: 1.6;
+  color: rgba(var(--brand-beige-rgb), 0.92);
 }
 
-.parallax-banner__specs {
+.parallax-banner__pillars {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-6);
+  gap: var(--space-4);
   padding-top: var(--space-4);
-  border-top: 1px solid var(--border-dark-subtle);
 }
 
 @media (min-width: 768px) {
-  .parallax-banner__specs {
+  .parallax-banner__pillars {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-.parallax-banner__spec-item {
+.parallax-banner__pillar {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  background-color: rgba(46, 46, 46, 0.45);
+  padding: var(--space-4) var(--space-6);
+  background-color: rgba(245, 245, 240, 0.05);
   border: 1px solid var(--border-dark-subtle);
+  border-radius: var(--radius-md);
 }
 
-.parallax-banner__spec-code {
-  font-size: 0.75rem;
+.parallax-banner__pillar-title {
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--brand-ochre);
-  font-weight: 500;
 }
 
-.parallax-banner__spec-label {
+.parallax-banner__pillar-label {
   font-size: 0.9375rem;
   color: var(--brand-bone);
+  line-height: 1.45;
 }
 </style>

@@ -3,12 +3,30 @@ import MaintenanceView from '@/views/MaintenanceView.vue'
 import HomeView from '@/views/HomeView.vue'
 
 /**
- * Enrutamiento Clean con modo Mantención en '/' y vista previa completa en '/test':
- * - '/' -> Pantalla oficial de sitio en construcción (MaintenanceView)
- * - '/test' -> Proyecto completo (HomeView) para revisión interna y colaboradores
- * - '/test/artistas/:slug' (y alias '/artistas/:slug') -> Vista dedicada de artista
+ * Enrutamiento con transición difuminada sin scroll visible:
+ * Guardamos la posición de lectura de '/test' y la aplicamos de forma instantánea
+ * únicamente cuando la vista saliente ya se difuminó por completo.
  */
 let lastTestHomeScrollTop = 0
+let pendingScrollTarget = { top: 0, hash: '' }
+
+export function applyPendingRouteScroll() {
+  if (typeof window === 'undefined') return
+
+  if (pendingScrollTarget.hash) {
+    const el = document.querySelector(pendingScrollTarget.hash)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+  }
+
+  window.scrollTo({
+    top: pendingScrollTarget.top || 0,
+    left: 0,
+    behavior: 'instant'
+  })
+}
 
 const routes = [
   {
@@ -16,7 +34,7 @@ const routes = [
     name: 'maintenance',
     component: MaintenanceView,
     meta: {
-      title: 'FunkyRoots Estudios // Sitio en construcción',
+      title: 'FunkyRoots Estudios — Sitio en construcción',
       isMaintenance: true
     }
   },
@@ -25,7 +43,7 @@ const routes = [
     name: 'home',
     component: HomeView,
     meta: {
-      title: 'FunkyRoots Estudios // Preview Colaboradores'
+      title: 'FunkyRoots Estudios — Producción & Sello Independiente'
     }
   },
   {
@@ -35,40 +53,37 @@ const routes = [
     component: () => import('@/views/ArtistDetailView.vue'),
     props: true,
     meta: {
-      title: 'Expediente de Artista // FunkyRoots Estudios'
+      title: 'Artista — FunkyRoots Estudios'
+    }
+  },
+  {
+    path: '/test/servicios/:slug',
+    alias: ['/servicios/:slug'],
+    name: 'service-detail',
+    component: () => import('@/views/ServiceDetailView.vue'),
+    props: true,
+    meta: {
+      title: 'Servicio — FunkyRoots Estudios'
     }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    }
-
-    if (to.hash) {
-      return {
-        el: to.hash,
-        behavior: 'smooth'
-      }
-    }
-
-    if (to.name === 'home' && from.name === 'artist-detail' && lastTestHomeScrollTop > 0) {
-      return {
-        top: lastTestHomeScrollTop,
-        left: 0
-      }
-    }
-
-    return { top: 0, left: 0 }
-  }
+  routes
 })
 
 router.beforeEach((to, from) => {
   if (typeof window !== 'undefined' && from.name === 'home') {
     lastTestHomeScrollTop = window.scrollY || 0
+  }
+
+  if (to.hash) {
+    pendingScrollTarget = { top: 0, hash: to.hash }
+  } else if (to.name === 'home' && (from.name === 'artist-detail' || from.name === 'service-detail') && lastTestHomeScrollTop > 0) {
+    pendingScrollTarget = { top: lastTestHomeScrollTop, hash: '' }
+  } else {
+    pendingScrollTarget = { top: 0, hash: '' }
   }
 })
 
