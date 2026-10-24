@@ -3,12 +3,7 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 
 /**
- * BaseButton — Botón atómico accesible (UI UX Pro Max).
- * Variantes:
- *  - 'primary' (Terracota Profundo #B8573C)
- *  - 'secondary' (Verde Pino Urbano #355A4C)
- *  - 'ghost' (Borde técnico sutil adaptable a modo claro/oscuro)
- * Cumple área mínima de toque 44x44px, estados :hover, :focus-visible (ring-2) y :active.
+ * BaseButton — Botón orgánico redondeado y accesible.
  */
 const props = defineProps({
   variant: {
@@ -81,16 +76,15 @@ const computedRel = computed(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   min-height: var(--touch-target-min);
   min-width: var(--touch-target-min);
-  padding: var(--space-3) var(--space-6);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-radius: 2px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-pill);
   border: 1px solid transparent;
   cursor: pointer;
   user-select: none;
@@ -98,65 +92,65 @@ const computedRel = computed(() => {
     background-color var(--duration-base) var(--ease-editorial),
     border-color var(--duration-base) var(--ease-editorial),
     color var(--duration-base) var(--ease-editorial),
-    transform var(--duration-fast) var(--ease-editorial);
+    transform var(--duration-fast) var(--ease-editorial),
+    box-shadow var(--duration-base) var(--ease-editorial);
 }
 
-/* Primary: Terracota Profundo (#B8573C) con texto Blanco Hueso (#F5F5F0) */
 .base-button--primary {
   background-color: var(--brand-terracotta);
   color: var(--brand-bone);
   border-color: var(--brand-terracotta);
+  box-shadow: 0 8px 24px -6px rgba(var(--brand-terracotta-rgb), 0.45);
 }
 
 .base-button--primary:hover {
-  background-color: #9e452c;
-  border-color: var(--brand-ochre);
-  transform: translateY(-1px);
+  background-color: #a34930;
+  border-color: #a34930;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -6px rgba(var(--brand-terracotta-rgb), 0.6);
 }
 
 .base-button--primary:active {
-  transform: translateY(1px);
-  background-color: #8c3b24;
+  transform: translateY(0);
 }
 
-/* Secondary: Verde Pino Urbano (#355A4C) */
 .base-button--secondary {
   background-color: var(--brand-pine);
   color: var(--brand-bone);
-  border-color: var(--brand-sage);
+  border-color: rgba(var(--brand-sage-rgb), 0.4);
 }
 
 .base-button--secondary:hover {
-  background-color: #29473c;
-  border-color: var(--brand-bone);
-  transform: translateY(-1px);
+  background-color: #2c4c40;
+  border-color: var(--brand-sage);
+  transform: translateY(-2px);
 }
 
 .base-button--secondary:active {
-  transform: translateY(1px);
+  transform: translateY(0);
 }
 
-/* Ghost para fondos oscuros */
 .base-button--ghost {
-  background-color: rgba(var(--brand-bone-rgb), 0.03);
+  background-color: rgba(var(--brand-bone-rgb), 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--brand-bone);
   border-color: var(--border-dark-strong);
 }
 
 .base-button--ghost:hover {
-  background-color: rgba(var(--brand-sage-rgb), 0.16);
+  background-color: rgba(var(--brand-sage-rgb), 0.2);
   border-color: var(--brand-sage);
   color: var(--brand-bone);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .base-button--ghost:active {
-  transform: translateY(1px);
+  transform: translateY(0);
 }
 
-/* Ghost para fondos claros */
 .base-button--ghost-light {
-  background-color: transparent;
+  background-color: rgba(var(--brand-graphite-rgb), 0.05);
   color: var(--brand-graphite);
   border-color: var(--border-light-strong);
 }
@@ -165,18 +159,12 @@ const computedRel = computed(() => {
   background-color: var(--brand-pine);
   border-color: var(--brand-pine);
   color: var(--brand-bone);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
-.base-button--ghost-light:active {
-  transform: translateY(1px);
-}
-
-/* Ring-2 accesible en foco por teclado */
 .base-button:focus-visible {
   outline: 2px solid var(--brand-ochre);
   outline-offset: 3px;
-  box-shadow: 0 0 0 2px var(--brand-dark);
 }
 
 .base-button__content {

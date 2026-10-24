@@ -1,15 +1,11 @@
 <script setup>
 /**
- * SectionHeader — Cabecera estandarizada de sección (UI UX Pro Max).
- * Compuesta por:
- *  1. Índice técnico monoespaciado (ej: `01 // SERVICIOS`)
- *  2. Título display en Poppins / Area Variable
- *  3. Subtítulo editorial en Inter
+ * SectionHeader — Cabecera limpia y orgánica, sin numeraciones (01, 02, 03) ni textos redundantes.
  */
 defineProps({
-  index: {
+  eyebrow: {
     type: String,
-    required: true
+    default: ''
   },
   title: {
     type: String,
@@ -21,7 +17,7 @@ defineProps({
   },
   theme: {
     type: String,
-    default: 'dark', // 'dark' | 'light' | 'pine'
+    default: 'dark',
     validator: (val) => ['dark', 'light', 'pine'].includes(val)
   }
 })
@@ -29,12 +25,10 @@ defineProps({
 
 <template>
   <header class="section-header" :class="`section-header--${theme}`">
-    <div class="section-header__meta">
-      <span class="section-header__indicator" aria-hidden="true"></span>
-      <span class="technical-index section-header__index">{{ index }}</span>
-    </div>
-
     <div class="section-header__main">
+      <span v-if="eyebrow" class="section-header__eyebrow">
+        {{ eyebrow }}
+      </span>
       <h2 class="font-display section-header__title">
         {{ title }}
       </h2>
@@ -51,76 +45,51 @@ defineProps({
 
 <style scoped>
 .section-header {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   gap: var(--space-6);
-  padding-bottom: var(--space-8);
   margin-bottom: var(--space-12);
-  border-bottom: 1px solid var(--border-dark-subtle);
 }
 
-.section-header--light {
-  border-bottom-color: var(--border-light-subtle);
-}
-
-.section-header--pine {
-  border-bottom-color: rgba(var(--brand-bone-rgb), 0.18);
-}
-
-@media (min-width: 960px) {
+@media (min-width: 900px) {
   .section-header {
-    grid-template-columns: 220px 1fr auto;
-    align-items: end;
+    flex-direction: row;
+    align-items: flex-end;
     gap: var(--space-8);
   }
-}
-
-.section-header__meta {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  align-self: start;
-  padding-top: var(--space-2);
-}
-
-.section-header__indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--brand-terracotta);
-}
-
-.section-header--light .section-header__indicator {
-  background-color: var(--brand-pine);
-}
-
-.section-header--pine .section-header__indicator {
-  background-color: var(--brand-ochre);
-}
-
-.section-header__index {
-  color: var(--brand-ochre);
-}
-
-.section-header--light .section-header__index {
-  color: var(--brand-pine);
-}
-
-.section-header--pine .section-header__index {
-  color: var(--brand-ochre);
 }
 
 .section-header__main {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  max-width: 720px;
+  gap: var(--space-3);
+  max-width: 680px;
+}
+
+.section-header__eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-ochre);
+}
+
+.section-header--light .section-header__eyebrow {
+  color: var(--brand-pine);
+}
+
+.section-header--pine .section-header__eyebrow {
+  color: var(--brand-ochre);
 }
 
 .section-header__title {
-  font-size: clamp(1.875rem, 3.5vw, 2.75rem);
-  font-weight: 600;
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-weight: 700;
   color: var(--brand-bone);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
 }
 
 .section-header--light .section-header__title {
@@ -129,21 +98,23 @@ defineProps({
 
 .section-header__subtitle {
   font-size: 1.0625rem;
-  line-height: 1.65;
-  color: var(--brand-beige);
+  line-height: 1.6;
+  color: rgba(var(--brand-beige-rgb), 0.85);
+  max-width: 56ch;
 }
 
 .section-header--light .section-header__subtitle {
-  color: rgba(var(--brand-graphite-rgb), 0.84);
+  color: rgba(var(--brand-graphite-rgb), 0.78);
 }
 
 .section-header--pine .section-header__subtitle {
-  color: var(--brand-beige);
+  color: rgba(var(--brand-beige-rgb), 0.9);
 }
 
 .section-header__actions {
   display: flex;
   align-items: center;
   gap: var(--space-4);
+  flex-shrink: 0;
 }
 </style>

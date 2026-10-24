@@ -1,13 +1,11 @@
 <script setup>
 import SectionHeader from '@/components/ui/SectionHeader.vue'
-import BaseBadge from '@/components/ui/BaseBadge.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
-import isotipoVerdeUrl from '@/assets/brand/FunkyRoots/ISOTIPO/FunkyRoots PNG.png'
+import isotipoVerdeUrl from '@/assets/brand/FunkyRoots/ISOTIPO/FunkyRoots PNG.webp'
 
 /**
- * CollaboratorsSection — Tema Marca/Claro (#355A4C Verde Pino Urbano y #E6E0D8 Beige Suave).
- * - Presenta a los colaboradores reales de FunkyRoots Estudios (Calde, Fabián Rocco, 10BAG & Maskao, Nicolás Burgos Pérez).
- * - Incluye el Isotipo oficial en Verde Pino Urbano sobre las tarjetas claras.
+ * CollaboratorsSection — Red creativa en formato orgánico redondeado,
+ * usando el Isotipo oficial en WebP y sin numeraciones ni chips innecesarios.
  */
 defineProps({
   collaborators: {
@@ -21,15 +19,13 @@ defineProps({
   <section
     id="colaboradores"
     class="collaborators-section theme-beige py-24"
-    aria-label="Red de colaboradores y aliados creativos"
+    aria-label="Comunidad y colaboradores"
   >
     <div class="container-editorial">
-      <!-- Bloque Destacado en Verde Pino Urbano (#355A4C) -->
-      <div class="collaborators-section__pine-banner p-8">
+      <div class="collaborators-section__pine-banner">
         <SectionHeader
-          index="04 // COLABORADORES"
-          title="Instrumentistas, MCs Invitados & Arte Visual"
-          subtitle="Músicos, intérpretes y creativos que participan activamente en las producciones, singles y dirección gráfica de FunkyRoots Estudios."
+          eyebrow="Red Creativa"
+          title="Músicos, MCs & Arte Visual"
           theme="pine"
         >
           <template #actions>
@@ -38,45 +34,37 @@ defineProps({
               href="https://www.instagram.com/funkyroots.cl"
               target="_blank"
             >
-              CONECTAR EN INSTAGRAM ↗
+              Instagram ↗
             </BaseButton>
           </template>
         </SectionHeader>
 
-        <!-- Grilla de Colaboradores sobre Superficie Clara (#F5F5F0) -->
         <div class="collaborators-section__grid gap-6">
           <article
             v-for="person in collaborators"
             :key="person.id"
-            class="collaborator-card p-6"
+            class="collaborator-card"
           >
-            <div class="collaborator-card__top">
-              <div class="collaborator-card__code-wrap">
-                <img
-                  :src="isotipoVerdeUrl"
-                  alt=""
-                  class="collaborator-card__isotipo"
-                />
-                <span class="font-mono collaborator-card__code">{{ person.code }}</span>
+            <div class="collaborator-card__header">
+              <img
+                :src="isotipoVerdeUrl"
+                alt=""
+                class="collaborator-card__isotipo"
+                loading="lazy"
+              />
+              <div>
+                <h3 class="font-display collaborator-card__name">
+                  {{ person.name }}
+                </h3>
+                <p class="collaborator-card__role">
+                  {{ person.role }}
+                </p>
               </div>
-              <BaseBadge variant="neutral-light">{{ person.location }}</BaseBadge>
             </div>
-
-            <h3 class="font-display collaborator-card__name">
-              {{ person.name }}
-            </h3>
-
-            <p class="font-mono collaborator-card__role">
-              {{ person.role }}
-            </p>
 
             <p class="collaborator-card__bio">
               {{ person.bio }}
             </p>
-
-            <div class="collaborator-card__footer font-mono">
-              <span>APORTE // {{ person.specialty }}</span>
-            </div>
           </article>
         </div>
       </div>
@@ -88,96 +76,77 @@ defineProps({
 .collaborators-section {
   background-color: var(--brand-beige);
   color: var(--brand-graphite);
-  border-bottom: 1px solid var(--border-light-subtle);
 }
 
 .collaborators-section__pine-banner {
+  padding: clamp(2rem, 4vw, 3.5rem);
   background-color: var(--brand-pine);
   color: var(--brand-bone);
-  border: 1px solid var(--border-light-strong);
-  border-radius: 2px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .collaborators-section__grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
 }
 
 @media (min-width: 768px) {
   .collaborators-section__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 .collaborator-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-3);
+  padding: var(--space-6);
   background-color: var(--brand-bone);
   color: var(--brand-graphite);
-  border: 1px solid var(--border-light-subtle);
-  border-radius: 2px;
-  transition:
-    transform var(--duration-base) var(--ease-editorial),
-    border-color var(--duration-base) var(--ease-editorial);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: transform var(--duration-base) var(--ease-editorial);
 }
 
 .collaborator-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--brand-ochre);
+  transform: translateY(-3px);
 }
 
-.collaborator-card__top {
+.collaborator-card__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--border-light-subtle);
-}
-
-.collaborator-card__code-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .collaborator-card__isotipo {
-  height: 20px;
+  height: 28px;
   width: auto;
   object-fit: contain;
-}
-
-.collaborator-card__code {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--brand-pine);
+  flex-shrink: 0;
 }
 
 .collaborator-card__name {
-  font-size: 1.35rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--brand-graphite);
 }
 
 .collaborator-card__role {
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: var(--brand-terracotta);
-  text-transform: uppercase;
 }
 
 .collaborator-card__bio {
   font-size: 0.9375rem;
-  line-height: 1.6;
-  color: rgba(var(--brand-graphite-rgb), 0.86);
-}
-
-.collaborator-card__footer {
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--border-light-subtle);
-  font-size: 0.75rem;
-  color: var(--brand-pine);
+  line-height: 1.55;
+  color: rgba(var(--brand-graphite-rgb), 0.84);
 }
 </style>

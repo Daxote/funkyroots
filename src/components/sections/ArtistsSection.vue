@@ -1,12 +1,11 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import SectionHeader from '@/components/ui/SectionHeader.vue'
-import BaseBadge from '@/components/ui/BaseBadge.vue'
 
 /**
- * ArtistsSection — Tema Dark (#141615 Carbón Profundo).
- * - Muestra los 4 perfiles principales de @FunkyRootsEstudios: J. de la Ribera, Quífaro, Lencio y Da Mirloz Clan.
- * - Incluye Rol, Sellos (`labels`) y navegación hacia `/artistas/:slug` con preservación de scroll.
+ * ArtistsSection — Tarjetas visuales e inmersivas en formato galería.
+ * La fotografía/portada ocupa todo el protagonismo con bordes redondeados orgánicos,
+ * sin chips ni numeraciones técnicas.
  */
 defineProps({
   artists: {
@@ -17,12 +16,11 @@ defineProps({
 </script>
 
 <template>
-  <section id="artistas" class="artists-section theme-dark py-24" aria-label="Roster de artistas">
+  <section id="artistas" class="artists-section theme-dark py-24" aria-label="Artistas del sello">
     <div class="container-editorial">
       <SectionHeader
-        index="02 // ARTISTAS"
-        title="Roster Oficial de FunkyRoots Estudios"
-        subtitle="Productores, beatmakers, MCs y colectivos que conforman el catálogo de @FunkyRootsEstudios. Selecciona un perfil para explorar sus beat tapes, videoclips y producciones."
+        eyebrow="Catálogo Artístico"
+        title="Voces, Beatmakers & Colectivos"
         theme="dark"
       />
 
@@ -35,52 +33,30 @@ defineProps({
           <RouterLink
             :to="`/test/artistas/${artist.slug}`"
             class="artist-card__link"
-            :aria-label="`Explorar perfil completo, discografía y videos de ${artist.name}`"
+            :aria-label="`Explorar perfil y obras de ${artist.name}`"
           >
-            <!-- Portada Editorial -->
             <div class="artist-card__media">
               <img
                 :src="artist.coverImage"
-                :alt="`Imagen de catálogo de ${artist.name}`"
+                :alt="artist.name"
                 class="artist-card__image"
                 loading="lazy"
                 decoding="async"
               />
-              <div class="artist-card__media-overlay"></div>
-              <div class="artist-card__badges p-4">
-                <span class="font-mono artist-card__index">{{ artist.index }}</span>
-                <div class="artist-card__label-group">
-                  <BaseBadge
-                    v-for="label in (artist.labels || [artist.labelTag])"
-                    :key="label"
-                    variant="ochre"
-                  >
-                    {{ label }}
-                  </BaseBadge>
-                </div>
-              </div>
-            </div>
+              <div class="artist-card__scrim" aria-hidden="true"></div>
 
-            <!-- Cuerpo de la Tarjeta (#2E2E2E) -->
-            <div class="artist-card__body p-6">
-              <div class="artist-card__meta font-mono">
-                <span>{{ artist.role || artist.genre }}</span>
-              </div>
+              <div class="artist-card__overlay-content">
+                <span class="artist-card__role">{{ artist.role }}</span>
+                <h3 class="font-display artist-card__name">
+                  {{ artist.name }}
+                </h3>
+                <p class="artist-card__bio">
+                  {{ artist.shortBio }}
+                </p>
 
-              <h3 class="font-display artist-card__name">
-                {{ artist.name }}
-              </h3>
-
-              <p class="artist-card__bio">
-                {{ artist.shortBio }}
-              </p>
-
-              <div class="artist-card__footer">
-                <span class="font-mono artist-card__stats">
-                  {{ artist.discography.length }} PRODUCCIONES · {{ artist.videos.length }} VIDEOS YT
-                </span>
-                <span class="font-mono artist-card__cta">
-                  ABRIR PERFIL →
+                <span class="artist-card__cta">
+                  <span>Explorar obras</span>
+                  <span class="artist-card__arrow" aria-hidden="true">→</span>
                 </span>
               </div>
             </div>
@@ -95,173 +71,158 @@ defineProps({
 .artists-section {
   background-color: var(--brand-dark);
   color: var(--brand-bone);
-  border-bottom: 1px solid var(--border-dark-subtle);
 }
 
 .artists-section__grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
 }
 
 @media (min-width: 768px) {
   .artists-section__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 .artist-card {
-  background-color: var(--brand-graphite);
-  border: 1px solid var(--border-dark-subtle);
-  border-radius: 2px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
+  background-color: var(--brand-graphite);
+  box-shadow: var(--shadow-media);
+  border: 1px solid var(--border-dark-subtle);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   transition:
+    transform var(--duration-base) var(--ease-editorial),
     border-color var(--duration-base) var(--ease-editorial),
-    transform var(--duration-base) var(--ease-editorial);
+    box-shadow var(--duration-base) var(--ease-editorial);
 }
 
 .artist-card:hover {
-  border-color: var(--brand-sage);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  border-color: rgba(var(--brand-sage-rgb), 0.45);
+  box-shadow: 0 28px 56px -14px rgba(0, 0, 0, 0.7);
 }
 
 .artist-card__link {
-  display: flex;
-  flex-direction: column;
+  display: block;
   height: 100%;
-  min-height: var(--touch-target-min);
-}
-
-.artist-card__link:focus-visible {
-  outline: 2px solid var(--brand-terracotta);
-  outline-offset: -2px;
-}
-
-.artist-card__link:active {
-  transform: scale(0.995);
+  width: 100%;
+  border-radius: var(--radius-xl);
 }
 
 .artist-card__media {
   position: relative;
-  aspect-ratio: 16 / 10;
-  background-color: var(--brand-dark);
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 11;
+  display: flex;
+  align-items: flex-end;
   overflow: hidden;
 }
 
+@media (min-width: 640px) {
+  .artist-card__media {
+    min-height: 360px;
+  }
+}
+
 .artist-card__image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.88) contrast(1.06);
+  filter: saturate(0.94) contrast(1.04);
   transition:
     transform var(--duration-slow) var(--ease-editorial),
     filter var(--duration-base) var(--ease-editorial);
 }
 
 .artist-card:hover .artist-card__image {
-  transform: scale(1.04);
-  filter: saturate(1.02) contrast(1.08);
+  transform: scale(1.06);
+  filter: saturate(1.08) contrast(1.06);
 }
 
-.artist-card__media-overlay {
+.artist-card__scrim {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(20, 22, 21, 0.58) 0%,
-    rgba(20, 22, 21, 0.08) 45%,
-    rgba(46, 46, 46, 0.92) 100%
+    rgba(20, 22, 21, 0.05) 0%,
+    rgba(20, 22, 21, 0.42) 42%,
+    rgba(20, 22, 21, 0.94) 100%
   );
 }
 
-.artist-card__badges {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
-.artist-card__label-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.artist-card__index {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--brand-bone);
-  padding: var(--space-1) var(--space-2);
-  background-color: rgba(20, 22, 21, 0.78);
-  border: 1px solid var(--border-dark-subtle);
-}
-
-.artist-card__body {
+.artist-card__overlay-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
-  flex: 1;
-  gap: var(--space-4);
+  gap: var(--space-2);
 }
 
-.artist-card__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 0.75rem;
+@media (min-width: 640px) {
+  .artist-card__overlay-content {
+    padding: var(--space-8);
+  }
+}
+
+.artist-card__role {
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: var(--brand-ochre);
+  letter-spacing: 0.03em;
 }
 
 .artist-card__name {
-  font-size: 1.625rem;
-  font-weight: 600;
+  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+  font-weight: 700;
   color: var(--brand-bone);
 }
 
 .artist-card__bio {
   font-size: 0.9375rem;
-  line-height: 1.65;
-  color: var(--brand-beige);
-  flex: 1;
-}
-
-.artist-card__footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--border-dark-subtle);
-}
-
-.artist-card__stats {
-  font-size: 0.75rem;
-  color: var(--brand-sage);
+  line-height: 1.55;
+  color: rgba(var(--brand-beige-rgb), 0.88);
+  max-width: 48ch;
+  margin-top: var(--space-1);
 }
 
 .artist-card__cta {
   display: inline-flex;
   align-items: center;
-  min-height: var(--touch-target-min);
-  padding: var(--space-2) var(--space-3);
-  font-size: 0.75rem;
-  font-weight: 500;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: 0.45rem 1.1rem;
+  width: fit-content;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--brand-bone);
-  background-color: rgba(var(--brand-terracotta-rgb), 0.22);
-  border: 1px solid var(--brand-terracotta);
-  border-radius: 2px;
+  background-color: rgba(var(--brand-terracotta-rgb), 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius-pill);
   transition:
     background-color var(--duration-fast) var(--ease-editorial),
-    color var(--duration-fast) var(--ease-editorial);
+    transform var(--duration-fast) var(--ease-editorial);
 }
 
 .artist-card:hover .artist-card__cta {
   background-color: var(--brand-terracotta);
-  color: var(--brand-bone);
+}
+
+.artist-card__arrow {
+  transition: transform var(--duration-fast) var(--ease-editorial);
+}
+
+.artist-card:hover .artist-card__arrow {
+  transform: translateX(4px);
 }
 </style>

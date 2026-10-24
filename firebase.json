@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "funkyroots-9a645",
     "public": "dist",
     "ignore": [
       "firebase.json",

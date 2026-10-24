@@ -1,11 +1,8 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { funkyRootsRepository } from '@/core/data/funkyRootsRepository'
-import imagotipoBlancoUrl from '@/assets/brand/FunkyRoots/IMAGOTIPO/FunkyRoots Blanco PNG.png'
+import imagotipoBlancoUrl from '@/assets/brand/FunkyRoots/IMAGOTIPO/FunkyRoots Blanco PNG.webp'
 
-/**
- * AppFooter — Cierre institucional con el Imagotipo Blanco Oficial de FunkyRoots y los 5 enlaces oficiales (YouTube, Instagram, SoundCloud, Apple Music, Spotify Playlist).
- */
 const brand = funkyRootsRepository.getBrandMetadata()
 const artists = funkyRootsRepository.getArtists()
 const currentYear = new Date().getFullYear()
@@ -15,42 +12,36 @@ const currentYear = new Date().getFullYear()
   <footer class="app-footer theme-dark">
     <div class="container-editorial py-16">
       <div class="app-footer__grid">
-        <!-- Columna 1: Identidad e Imagotipo Oficial -->
         <div class="app-footer__brand-col">
           <RouterLink to="/test" class="app-footer__logo-link" aria-label="FunkyRoots Estudios — Inicio">
             <img
               :src="imagotipoBlancoUrl"
               alt="FunkyRoots Estudios"
               class="app-footer__imagotipo"
+              loading="lazy"
             />
           </RouterLink>
           <p class="app-footer__description">
             {{ brand.manifestoLead }}
           </p>
-          <p class="font-mono app-footer__coords">
-            {{ brand.location }}
-          </p>
         </div>
 
-        <!-- Columna 2: Roster del Sello -->
         <div class="app-footer__col">
-          <h3 class="font-mono app-footer__heading">ROSTER // ARTISTAS</h3>
+          <h3 class="app-footer__heading">Artistas</h3>
           <ul class="app-footer__list">
             <li v-for="artist in artists" :key="artist.id">
               <RouterLink
                 :to="`/test/artistas/${artist.slug}`"
                 class="app-footer__link"
               >
-                <span class="font-mono app-footer__link-code">{{ artist.index }}</span>
-                <span>{{ artist.name }}</span>
+                {{ artist.name }}
               </RouterLink>
             </li>
           </ul>
         </div>
 
-        <!-- Columna 3: Enlaces Oficiales de Marca -->
         <div class="app-footer__col">
-          <h3 class="font-mono app-footer__heading">CANALES // OFICIALES</h3>
+          <h3 class="app-footer__heading">Plataformas</h3>
           <ul class="app-footer__list">
             <li v-for="social in brand.contact.socials" :key="social.label">
               <a
@@ -60,38 +51,30 @@ const currentYear = new Date().getFullYear()
                 class="app-footer__link"
               >
                 <span>{{ social.label }}</span>
-                <span class="font-mono app-footer__arrow" aria-hidden="true">↗</span>
+                <span class="app-footer__arrow" aria-hidden="true">↗</span>
               </a>
             </li>
           </ul>
         </div>
 
-        <!-- Columna 4: Estudio & Contacto -->
         <div class="app-footer__col">
-          <h3 class="font-mono app-footer__heading">CONTACTO // ESTUDIO</h3>
-          <p class="app-footer__address">{{ brand.contact.address }}</p>
+          <h3 class="app-footer__heading">Contacto</h3>
+          <p class="app-footer__address">{{ brand.location }}</p>
           <a
             :href="`mailto:${brand.contact.bookingEmail}`"
-            class="app-footer__email font-mono"
+            class="app-footer__email"
           >
             {{ brand.contact.bookingEmail }}
-          </a>
-          <a
-            :href="`mailto:${brand.contact.email}`"
-            class="app-footer__email font-mono"
-          >
-            {{ brand.contact.email }}
           </a>
         </div>
       </div>
 
-      <!-- Línea Técnica Inferior -->
       <div class="app-footer__bottom">
-        <span class="font-mono app-footer__copy">
-          © {{ currentYear }} FUNKYROOTS ESTUDIOS. TODOS LOS DERECHOS RESERVADOS.
+        <span class="app-footer__copy">
+          © {{ currentYear }} FunkyRoots Estudios
         </span>
-        <span class="font-mono app-footer__spec">
-          IDENTIDAD VISUAL // NICOLÁS BURGOS PÉREZ · ARQUITECTURA CLEAN
+        <span class="app-footer__spec">
+          Identidad Visual por Nicolás Burgos Pérez
         </span>
       </div>
     </div>
@@ -102,25 +85,29 @@ const currentYear = new Date().getFullYear()
 .app-footer {
   background-color: var(--brand-dark);
   border-top: 1px solid var(--border-dark-subtle);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .app-footer__grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-8);
   padding-bottom: var(--space-12);
   border-bottom: 1px solid var(--border-dark-subtle);
+  width: 100%;
 }
 
 @media (min-width: 768px) {
   .app-footer__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1080px) {
   .app-footer__grid {
-    grid-template-columns: 1.5fr 1fr 1fr 1.1fr;
+    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -138,34 +125,30 @@ const currentYear = new Date().getFullYear()
 }
 
 .app-footer__imagotipo {
-  height: 54px;
+  height: 48px;
   width: auto;
   object-fit: contain;
 }
 
 .app-footer__description {
   font-size: 0.9375rem;
-  color: var(--brand-beige);
-  max-width: 38ch;
-  line-height: 1.65;
-}
-
-.app-footer__coords {
-  font-size: 0.75rem;
-  color: var(--brand-ochre);
+  color: rgba(var(--brand-beige-rgb), 0.8);
+  max-width: 36ch;
+  line-height: 1.6;
 }
 
 .app-footer__col {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .app-footer__heading {
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: var(--brand-ochre);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .app-footer__list {
@@ -179,28 +162,19 @@ const currentYear = new Date().getFullYear()
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  min-height: var(--touch-target-min);
-  padding: var(--space-2) var(--space-3);
-  margin-left: calc(var(--space-3) * -1);
+  min-height: 40px;
+  padding: var(--space-1) var(--space-3);
   font-size: 0.9375rem;
-  color: var(--brand-bone);
-  border-radius: 2px;
-  border: 1px solid transparent;
+  color: rgba(var(--brand-bone-rgb), 0.88);
+  border-radius: var(--radius-pill);
   transition:
     color var(--duration-fast) var(--ease-editorial),
-    background-color var(--duration-fast) var(--ease-editorial),
-    border-color var(--duration-fast) var(--ease-editorial);
+    background-color var(--duration-fast) var(--ease-editorial);
 }
 
 .app-footer__link:hover {
   color: var(--brand-bone);
-  background-color: rgba(var(--brand-pine-rgb), 0.25);
-  border-color: rgba(var(--brand-sage-rgb), 0.35);
-}
-
-.app-footer__link-code {
-  font-size: 0.75rem;
-  color: var(--brand-sage);
+  background-color: rgba(var(--brand-pine-rgb), 0.3);
 }
 
 .app-footer__arrow {
@@ -209,14 +183,15 @@ const currentYear = new Date().getFullYear()
 
 .app-footer__address {
   font-size: 0.9375rem;
-  color: var(--brand-beige);
+  color: rgba(var(--brand-beige-rgb), 0.8);
 }
 
 .app-footer__email {
   display: inline-flex;
   align-items: center;
   min-height: var(--touch-target-min);
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
   color: var(--brand-bone);
   text-decoration: underline;
   text-decoration-color: var(--brand-sage);
@@ -231,10 +206,10 @@ const currentYear = new Date().getFullYear()
 .app-footer__bottom {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding-top: var(--space-8);
-  font-size: 0.75rem;
-  color: var(--brand-beige);
+  gap: var(--space-2);
+  padding-top: var(--space-6);
+  font-size: 0.8125rem;
+  color: rgba(var(--brand-beige-rgb), 0.65);
 }
 
 @media (min-width: 768px) {

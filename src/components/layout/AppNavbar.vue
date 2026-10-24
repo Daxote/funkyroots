@@ -2,31 +2,55 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import BaseButton from '@/components/ui/BaseButton.vue'
-import isotipoBlancoUrl from '@/assets/brand/FunkyRoots/ISOTIPO/FunkyRoots Blanco PNG.png'
-import logotipoBlancoUrl from '@/assets/brand/FunkyRoots/LOGOTIPO/FunkyRoots Blanco PNG.png'
+import isotipoBlancoUrl from '@/assets/brand/FunkyRoots/ISOTIPO/FunkyRoots Blanco PNG.webp'
+import logotipoBlancoUrl from '@/assets/brand/FunkyRoots/LOGOTIPO/FunkyRoots Blanco PNG.webp'
 
 /**
- * AppNavbar — Navegación fija con backdrop-blur, adaptación según scroll e identidad visual oficial de FunkyRoots.
+ * AppNavbar — Navegación orgánica que se esconde suavemente al hacer scroll hacia abajo
+ * y reaparece al subir. Sin numeraciones (01, 02, 03) ni tipografía monoespaciada.
  */
 const isScrolled = ref(false)
+const isHidden = ref(false)
 const isMobileMenuOpen = ref(false)
+
+let lastScrollY = 0
 
 const route = useRoute()
 const router = useRouter()
 
 const navItems = [
-  { code: '01', label: 'Servicios', hash: '#servicios' },
-  { code: '02', label: 'Artistas', hash: '#artistas' },
-  { code: '03', label: 'Obras', hash: '#obras' },
-  { code: '04', label: 'Colaboradores', hash: '#colaboradores' }
+  { label: 'Artistas', hash: '#artistas' },
+  { label: 'Obras y Videos', hash: '#obras' },
+  { label: 'Servicios', hash: '#servicios' },
+  { label: 'Comunidad', hash: '#colaboradores' }
 ]
 
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 32
+  const currentScrollY = window.scrollY || 0
+  isScrolled.value = currentScrollY > 32
+
+  if (isMobileMenuOpen.value) {
+    isHidden.value = false
+    lastScrollY = currentScrollY
+    return
+  }
+
+  if (currentScrollY <= 72) {
+    isHidden.value = false
+  } else if (currentScrollY > lastScrollY + 6) {
+    isHidden.value = true
+  } else if (currentScrollY < lastScrollY - 8) {
+    isHidden.value = false
+  }
+
+  lastScrollY = currentScrollY
 }
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
+  if (isMobileMenuOpen.value) {
+    isHidden.value = false
+  }
 }
 
 const closeMobileMenu = () => {
@@ -46,6 +70,7 @@ const navigateToSection = async (hash) => {
 }
 
 onMounted(() => {
+  lastScrollY = window.scrollY || 0
   handleScroll()
   window.addEventListener('scroll', handleScroll, { passive: true })
 })
@@ -60,15 +85,15 @@ onUnmounted(() => {
     class="app-navbar"
     :class="{
       'app-navbar--scrolled': isScrolled,
+      'app-navbar--hidden': isHidden,
       'app-navbar--menu-open': isMobileMenuOpen
     }"
   >
     <div class="container-editorial app-navbar__inner">
-      <!-- Identidad Oficial de Marca (Isotipo + Logotipo sin fondo) -->
       <RouterLink
         to="/test"
         class="app-navbar__brand"
-        aria-label="FunkyRoots Estudios — Ir al inicio"
+        aria-label="FunkyRoots Estudios — Inicio"
         @click="closeMobileMenu"
       >
         <img
@@ -83,49 +108,42 @@ onUnmounted(() => {
         />
       </RouterLink>
 
-      <!-- Navegación Desktop -->
       <nav class="app-navbar__nav" aria-label="Navegación principal">
         <ul class="app-navbar__list">
-          <li v-for="item in navItems" :key="item.code">
+          <li v-for="item in navItems" :key="item.hash">
             <a
               :href="`/test${item.hash}`"
               class="app-navbar__link"
               @click.prevent="navigateToSection(item.hash)"
             >
-              <span class="font-mono app-navbar__link-code">{{ item.code }}</span>
-              <span>{{ item.label }}</span>
+              {{ item.label }}
             </a>
           </li>
         </ul>
       </nav>
 
-      <!-- Acción Primaria Desktop -->
       <div class="app-navbar__cta">
         <BaseButton
           variant="primary"
           href="https://www.youtube.com/@FunkyRootsEstudios"
           target="_blank"
-          aria-label="Visitar canal oficial de YouTube @FunkyRootsEstudios"
+          aria-label="Visitar canal oficial de YouTube"
         >
-          @FUNKYROOTSESTUDIOS ↗
+          Canal YouTube ↗
         </BaseButton>
       </div>
 
-      <!-- Botón Menú Móvil (>= 44x44px) -->
       <button
         type="button"
         class="app-navbar__burger"
         :aria-expanded="isMobileMenuOpen ? 'true' : 'false'"
         aria-controls="mobile-nav-drawer"
-        :aria-label="isMobileMenuOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'"
+        :aria-label="isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'"
         @click="toggleMobileMenu"
       >
-        <span class="font-mono app-navbar__burger-label">
-          {{ isMobileMenuOpen ? 'CERRAR' : 'MENÚ' }}
-        </span>
         <svg
-          width="20"
-          height="20"
+          width="22"
+          height="22"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -139,7 +157,6 @@ onUnmounted(() => {
       </button>
     </div>
 
-    <!-- Drawer de Navegación Móvil -->
     <div
       v-if="isMobileMenuOpen"
       id="mobile-nav-drawer"
@@ -147,14 +164,13 @@ onUnmounted(() => {
     >
       <div class="container-editorial app-navbar__drawer-inner">
         <ul class="app-navbar__drawer-list">
-          <li v-for="item in navItems" :key="item.code">
+          <li v-for="item in navItems" :key="item.hash">
             <a
               :href="`/test${item.hash}`"
-              class="app-navbar__drawer-link"
+              class="app-navbar__drawer-link font-display"
               @click.prevent="navigateToSection(item.hash)"
             >
-              <span class="font-mono app-navbar__link-code">{{ item.code }} //</span>
-              <span class="font-display">{{ item.label }}</span>
+              {{ item.label }}
             </a>
           </li>
         </ul>
@@ -165,7 +181,7 @@ onUnmounted(() => {
             href="https://www.youtube.com/@FunkyRootsEstudios"
             target="_blank"
           >
-            CANAL OFICIAL YOUTUBE ↗
+            Canal Oficial YouTube ↗
           </BaseButton>
         </div>
       </div>
@@ -181,19 +197,25 @@ onUnmounted(() => {
   right: 0;
   z-index: 100;
   height: var(--navbar-height);
-  background-color: rgba(20, 22, 21, 0.45);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-dark-subtle);
+  background-color: rgba(20, 22, 21, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
+  transform: translateY(0);
   transition:
+    transform 360ms var(--ease-editorial),
     background-color var(--duration-base) var(--ease-editorial),
     border-color var(--duration-base) var(--ease-editorial);
 }
 
 .app-navbar--scrolled,
 .app-navbar--menu-open {
-  background-color: rgba(20, 22, 21, 0.92);
-  border-bottom-color: rgba(var(--brand-sage-rgb), 0.28);
+  background-color: rgba(20, 22, 21, 0.88);
+  border-bottom-color: var(--border-dark-subtle);
+}
+
+.app-navbar--hidden {
+  transform: translateY(-110%);
 }
 
 .app-navbar__inner {
@@ -207,21 +229,21 @@ onUnmounted(() => {
 .app-navbar__brand {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   min-height: var(--touch-target-min);
   padding: var(--space-1) var(--space-2);
-  border-radius: 2px;
+  border-radius: var(--radius-pill);
 }
 
 .app-navbar__isotipo {
-  height: 36px;
+  height: 34px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
 }
 
 .app-navbar__logotipo {
-  height: 28px;
+  height: 22px;
   width: auto;
   object-fit: contain;
 }
@@ -240,38 +262,29 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  padding: 0.3rem;
+  background-color: rgba(245, 245, 240, 0.04);
+  border: 1px solid var(--border-dark-subtle);
+  border-radius: var(--radius-pill);
 }
 
 .app-navbar__link {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  min-height: var(--touch-target-min);
-  padding: var(--space-2) var(--space-4);
-  font-size: 0.875rem;
+  min-height: 40px;
+  padding: 0.45rem 1.15rem;
+  font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--brand-bone);
-  border: 1px solid transparent;
-  border-radius: 2px;
+  color: rgba(var(--brand-bone-rgb), 0.86);
+  border-radius: var(--radius-pill);
   transition:
     color var(--duration-fast) var(--ease-editorial),
-    border-color var(--duration-fast) var(--ease-editorial),
     background-color var(--duration-fast) var(--ease-editorial);
 }
 
 .app-navbar__link:hover {
   color: var(--brand-bone);
-  background-color: rgba(var(--brand-pine-rgb), 0.28);
-  border-color: rgba(var(--brand-sage-rgb), 0.45);
-}
-
-.app-navbar__link:active {
-  transform: translateY(1px);
-}
-
-.app-navbar__link-code {
-  font-size: 0.75rem;
-  color: var(--brand-ochre);
+  background-color: rgba(var(--brand-pine-rgb), 0.45);
 }
 
 .app-navbar__cta {
@@ -288,13 +301,14 @@ onUnmounted(() => {
 .app-navbar__burger {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
+  justify-content: center;
   min-height: var(--touch-target-min);
   min-width: var(--touch-target-min);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2);
   color: var(--brand-bone);
+  background-color: rgba(245, 245, 240, 0.06);
   border: 1px solid var(--border-dark-strong);
-  border-radius: 2px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
 }
 
@@ -304,14 +318,13 @@ onUnmounted(() => {
   }
 }
 
-.app-navbar__burger-label {
-  font-size: 0.75rem;
-  color: var(--brand-ochre);
-}
-
 .app-navbar__drawer {
-  background-color: var(--brand-dark);
+  background-color: rgba(20, 22, 21, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border-dark-strong);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
   padding: var(--space-6) 0 var(--space-8);
 }
 
@@ -336,16 +349,17 @@ onUnmounted(() => {
 .app-navbar__drawer-link {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
   min-height: var(--touch-target-min);
   padding: var(--space-3) var(--space-4);
   font-size: 1.25rem;
+  font-weight: 600;
   color: var(--brand-bone);
-  border-bottom: 1px solid var(--border-dark-subtle);
+  border-radius: var(--radius-md);
+  transition: background-color var(--duration-fast) var(--ease-editorial);
 }
 
 .app-navbar__drawer-link:hover {
-  background-color: rgba(var(--brand-pine-rgb), 0.25);
+  background-color: rgba(var(--brand-pine-rgb), 0.3);
 }
 
 .app-navbar__drawer-footer {

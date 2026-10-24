@@ -1,83 +1,77 @@
 /* ==========================================================================
-   FUNKY ROOTS — SISTEMA DE DISEÑO (UI UX PRO MAX)
-   Arquetipo: Editorial Sound Studio & Dark Minimal
-   Stack: CSS Puro con Custom Properties y Utilidades Semánticas (Sin Tailwind ni Bootstrap)
+   FUNKY ROOTS — SISTEMA DE DISEÑO ORGÁNICO & MULTIMEDIA
+   Arquetipo: Estudio Audiovisual, Sello Independiente & Raíz Orgánica
    ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   1. PREPARACIÓN TIPOGRÁFICA (ADOBE FONTS — AREA VARIABLE)
-   --------------------------------------------------------------------------
-   Para activar 'Area Variable' desde Adobe Fonts (Typekit):
-   1. Incluir <link rel="stylesheet" href="https://use.typekit.net/TU_KIT_ID.css"> en index.html
-   2. O descomentar el bloque @font-face si se auto-hospeda el archivo .woff2:
-
-   @font-face {
-     font-family: 'Area Variable';
-     src: url('/fonts/AreaVariable.woff2') format('woff2-variations');
-     font-weight: 100 900;
-     font-style: normal;
-     font-display: swap;
-   }
-   -------------------------------------------------------------------------- */
 
 :root {
   /* Paleta de Colores Oficial — Funky Roots */
-  --brand-pine: #355A4C;        /* Verde Pino Urbano — Identidad principal, bloques destacados y acentos */
+  --brand-pine: #355A4C;        /* Verde Pino Urbano — Identidad principal y acentos orgánicos */
   --brand-pine-rgb: 53, 90, 76;
 
-  --brand-sage: #6F8F7A;        /* Verde Claro Salvia — Acentos secundarios, bordes activos dark, indicadores */
+  --brand-sage: #6F8F7A;        /* Verde Claro Salvia — Acentos suaves y realces */
   --brand-sage-rgb: 111, 143, 122;
 
-  --brand-dark: #141615;        /* Carbón Profundo — Fondo primario secciones Dark y vista detalle artista (Prohibido #000000) */
+  --brand-dark: #141615;        /* Carbón Profundo — Fondo primario oscuro */
   --brand-dark-rgb: 20, 22, 21;
 
-  --brand-graphite: #2E2E2E;    /* Gris Grafito — Superficies tarjetas Dark y texto primario secciones claras */
+  --brand-graphite: #2E2E2E;    /* Gris Grafito — Superficies secundarias y texto en fondos claros */
   --brand-graphite-rgb: 46, 46, 46;
 
-  --brand-bone: #F5F5F0;        /* Blanco Hueso — Fondo primario secciones claras y texto principal Dark */
+  --brand-bone: #F5F5F0;        /* Blanco Hueso — Fondo claro cálido y texto principal en oscuro */
   --brand-bone-rgb: 245, 245, 240;
 
-  --brand-beige: #E6E0D8;       /* Beige Suave — Superficies tarjetas claras y texto secundario/muted Dark */
+  --brand-beige: #E6E0D8;       /* Beige Suave — Superficies cálidas y texto secundario */
   --brand-beige-rgb: 230, 224, 216;
 
-  --brand-terracotta: #B8573C;  /* Terracota Profundo — Botones CTA primarios, controles reproducción y acentos cálidos */
+  --brand-terracotta: #B8573C;  /* Terracota Profundo — Acciones principales y controles multimedia */
   --brand-terracotta-rgb: 184, 87, 60;
 
-  --brand-ochre: #C1A875;       /* Ocre Moderno — Etiquetas de sellos discográficos, años, roles técnicos y badges */
+  --brand-ochre: #C1A875;       /* Ocre Moderno — Detalles cálidos y acentos editoriales */
   --brand-ochre-rgb: 193, 168, 117;
 
-  /* Bordes Técnicos Sutiles de 1px */
-  --border-light-subtle: rgba(46, 46, 46, 0.12);   /* border-[#2E2E2E]/10 equivalente en secciones claras */
-  --border-light-strong: rgba(46, 46, 46, 0.24);
-  --border-dark-subtle: rgba(245, 245, 240, 0.10); /* border-[#F5F5F0]/10 equivalente en secciones oscuras */
-  --border-dark-strong: rgba(245, 245, 240, 0.22);
+  /* Bordes Orgánicos Suaves */
+  --border-light-subtle: rgba(46, 46, 46, 0.10);
+  --border-light-strong: rgba(46, 46, 46, 0.20);
+  --border-dark-subtle: rgba(245, 245, 240, 0.09);
+  --border-dark-strong: rgba(245, 245, 240, 0.18);
 
-  /* Sistema Tipográfico */
+  /* Sistema Tipográfico — Cálido y Musical (Sin fuentes monoespaciadas) */
   --font-display: 'Poppins', 'Area Variable', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Escala Matemática de Espaciado (Base 4px / 8px exclusiva) */
+  /* Geometría Orgánica Redondeada (Sin puntas cuadradas) */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 9999px;
+
+  /* Sombras Ambientales Suaves */
+  --shadow-soft: 0 12px 32px -8px rgba(0, 0, 0, 0.35);
+  --shadow-media: 0 20px 48px -12px rgba(0, 0, 0, 0.55);
+  --shadow-light: 0 12px 30px -10px rgba(46, 46, 46, 0.08);
+
+  /* Escala de Espaciado */
   --space-1: 0.25rem;   /* 4px  */
   --space-2: 0.5rem;    /* 8px  */
   --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px (p-4) */
-  --space-6: 1.5rem;    /* 24px (p-6 / gap-6) */
-  --space-8: 2rem;      /* 32px (p-8 / gap-8) */
+  --space-4: 1rem;      /* 16px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
   --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px (py-16) */
-  --space-24: 6rem;     /* 96px (py-24) */
+  --space-16: 4rem;     /* 64px */
+  --space-24: 6rem;     /* 96px */
 
   /* Dimensiones de Layout y Accesibilidad */
-  --container-max: 1360px;
-  --navbar-height: 80px;
+  --container-max: 1380px;
+  --navbar-height: 76px;
   --touch-target-min: 44px;
 
-  /* Transiciones Contextuales (UI UX Pro Max) */
+  /* Transiciones Orgánicas */
   --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-fast: 180ms;
-  --duration-base: 280ms;
-  --duration-slow: 500ms;
+  --duration-fast: 200ms;
+  --duration-base: 320ms;
+  --duration-slow: 560ms;
 }
 
 /* --------------------------------------------------------------------------
@@ -93,11 +87,15 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
+  /* Sin scroll-behavior: smooth global para que las transiciones de ruta sean inmediatas y difuminadas */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--brand-dark);
   color: var(--brand-bone);
+  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
+  width: 100%;
 }
 
 body {
@@ -107,13 +105,27 @@ body {
   background-color: var(--brand-dark);
   color: var(--brand-bone);
   overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
+  width: 100%;
+  position: relative;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+#app {
+  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
+  width: 100%;
 }
 
 img,
 picture,
 video,
 canvas,
-svg {
+svg,
+iframe {
   display: block;
   max-width: 100%;
 }
@@ -138,10 +150,11 @@ ol {
   list-style: none;
 }
 
-/* Foco Visible Estandarizado (ring-2 equivalente accesible WCAG AA) */
+/* Foco Visible Estandarizado (Accesible WCAG AA) */
 :focus-visible {
   outline: 2px solid var(--brand-terracotta);
   outline-offset: 3px;
+  border-radius: var(--radius-sm);
 }
 
 .theme-light :focus-visible {
@@ -158,10 +171,10 @@ ol {
   padding: var(--space-3) var(--space-6);
   background-color: var(--brand-terracotta);
   color: var(--brand-bone);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.875rem;
-  font-weight: 500;
-  border: 1px solid var(--brand-bone);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
   transition: top var(--duration-fast) var(--ease-editorial);
 }
 
@@ -170,7 +183,7 @@ ol {
 }
 
 /* --------------------------------------------------------------------------
-   3. TEMAS DE SECCIÓN (ALTERNANCIA RÍTMICA)
+   3. TEMAS DE SECCIÓN
    -------------------------------------------------------------------------- */
 .theme-dark {
   background-color: var(--brand-dark);
@@ -198,25 +211,32 @@ ol {
 }
 
 /* --------------------------------------------------------------------------
-   4. CONTENEDORES Y ESCALA DE ESPACIADO MATEMÁTICA (4px / 8px)
+   4. CONTENEDORES Y ESPACIADO
    -------------------------------------------------------------------------- */
 .container-editorial {
   width: 100%;
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;
-  padding-left: var(--space-6);
-  padding-right: var(--space-6);
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
+  .container-editorial {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+@media (min-width: 960px) {
   .container-editorial {
     padding-left: var(--space-8);
     padding-right: var(--space-8);
   }
 }
 
-/* Utilidades de Espaciado Matemático */
 .p-4 { padding: var(--space-4); }
 .p-6 { padding: var(--space-6); }
 .p-8 { padding: var(--space-8); }
@@ -227,53 +247,25 @@ ol {
 .gap-8 { gap: var(--space-8); }
 
 /* --------------------------------------------------------------------------
-   5. JERARQUÍA TIPOGRÁFICA Y UTILIDADES TÉCNICAS
+   5. JERARQUÍA TIPOGRÁFICA (SIN FUENTES MONOESPACIADAS)
    -------------------------------------------------------------------------- */
 .font-display {
   font-family: var(--font-display);
   letter-spacing: -0.025em;
-  line-height: 1.12;
+  line-height: 1.14;
 }
 
 .font-sans {
   font-family: var(--font-sans);
 }
 
-.font-mono {
-  font-family: var(--font-mono);
+.eyebrow-label {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
   letter-spacing: 0.06em;
-}
-
-.technical-index {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-/* Delimitadores Técnicos de 1px */
-.border-subtle-dark {
-  border: 1px solid var(--border-dark-subtle);
-}
-
-.border-subtle-light {
-  border: 1px solid var(--border-light-subtle);
-}
-
-.divider-technical-dark {
-  height: 1px;
-  width: 100%;
-  background-color: var(--border-dark-subtle);
-}
-
-.divider-technical-light {
-  height: 1px;
-  width: 100%;
-  background-color: var(--border-light-subtle);
+  color: var(--brand-ochre);
 }
 
 /* --------------------------------------------------------------------------

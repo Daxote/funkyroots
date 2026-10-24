@@ -1,15 +1,7 @@
 <script setup>
 import { funkyRootsRepository } from '@/core/data/funkyRootsRepository'
-import imagotipoBlancoUrl from '@/assets/brand/FunkyRoots/IMAGOTIPO/FunkyRoots Blanco PNG.png'
-import isotipoBlancoUrl from '@/assets/brand/FunkyRoots/ISOTIPO/FunkyRoots Blanco PNG.png'
+import imagotipoBlancoUrl from '@/assets/brand/FunkyRoots/IMAGOTIPO/FunkyRoots Blanco PNG.webp'
 
-/**
- * MaintenanceView — Pantalla oficial de mantención en la raíz ('/') de FunkyRoots Estudios.
- * - Integra el Imagotipo e Isotipo oficiales sin fondo.
- * - Fondo atmosférico con auras orgánicas (Verde Pino #355A4C, Verde Salvia #6F8F7A, Terracota #B8573C, Ocre #C1A875)
- *   y ondas sonoras / de frecuencia animadas suavemente.
- * - Incluye el mensaje solicitado: "Sitio en construcción, pronto nuevos proyectos".
- */
 const brand = funkyRootsRepository.getBrandMetadata()
 </script>
 
@@ -18,7 +10,6 @@ const brand = funkyRootsRepository.getBrandMetadata()
     class="maintenance-screen theme-dark"
     aria-label="FunkyRoots Estudios — Sitio en construcción"
   >
-    <!-- Auras de color orgánicas de la marca -->
     <div class="maintenance-screen__auras" aria-hidden="true">
       <div class="maintenance-aura maintenance-aura--pine"></div>
       <div class="maintenance-aura maintenance-aura--sage"></div>
@@ -26,7 +17,6 @@ const brand = funkyRootsRepository.getBrandMetadata()
       <div class="maintenance-aura maintenance-aura--ochre"></div>
     </div>
 
-    <!-- Ondas acústicas / vectoriales en movimiento suave -->
     <div class="maintenance-screen__waves" aria-hidden="true">
       <svg
         class="maintenance-waves-svg"
@@ -62,22 +52,8 @@ const brand = funkyRootsRepository.getBrandMetadata()
       </svg>
     </div>
 
-    <!-- Retícula técnica sutil -->
-    <div class="maintenance-screen__grid-overlay" aria-hidden="true"></div>
-
     <div class="container-editorial maintenance-screen__container">
-      <!-- Barra superior de estado del estudio -->
-      <header class="maintenance-screen__top font-mono">
-        <div class="maintenance-screen__status">
-          <span class="maintenance-screen__pulse-dot" aria-hidden="true"></span>
-          <span>FUNKYROOTS ESTUDIOS // MODO LABORATORIO</span>
-        </div>
-        <span class="maintenance-screen__coords">{{ brand.location }}</span>
-      </header>
-
-      <!-- Contenido Central: Logo Oficial + Mensaje de Construcción -->
       <div class="maintenance-screen__center">
-        <!-- Halo detrás del logo -->
         <div class="maintenance-screen__logo-stage">
           <div class="maintenance-screen__logo-ring" aria-hidden="true"></div>
           <img
@@ -87,25 +63,14 @@ const brand = funkyRootsRepository.getBrandMetadata()
           />
         </div>
 
-        <div class="maintenance-screen__badge font-mono">
-          <img
-            :src="isotipoBlancoUrl"
-            alt=""
-            class="maintenance-screen__mini-isotipo"
-            aria-hidden="true"
-          />
-          <span>ACTUALIZACIÓN DE CATÁLOGO &amp; PLATAFORMA</span>
-        </div>
-
         <h1 class="font-display maintenance-screen__title">
           Sitio en construcción, pronto nuevos proyectos
         </h1>
 
         <p class="maintenance-screen__subtitle">
-          Estamos preparando nuestra nueva plataforma editorial, sesiones audiovisuales y catálogo fonográfico desde el estudio.
+          Preparando nuestras próximas sesiones audiovisuales y lanzamientos desde el estudio.
         </p>
 
-        <!-- Ecualizador / Indicador de Onda Acústica -->
         <div class="maintenance-screen__eq" aria-hidden="true">
           <span class="eq-bar eq-bar--1"></span>
           <span class="eq-bar eq-bar--2"></span>
@@ -117,19 +82,14 @@ const brand = funkyRootsRepository.getBrandMetadata()
         </div>
       </div>
 
-      <!-- Pie con Canales Oficiales Activos mientras el sitio está en construcción -->
       <footer class="maintenance-screen__footer">
-        <span class="font-mono maintenance-screen__footer-label">
-          MIENTRAS TANTO, ESCUCHA Y CONECTA EN NUESTROS CANALES OFICIALES:
-        </span>
-
         <ul class="maintenance-screen__socials" aria-label="Canales oficiales de FunkyRoots Estudios">
           <li v-for="social in brand.contact.socials" :key="social.label">
             <a
               :href="social.url"
               target="_blank"
               rel="noopener noreferrer"
-              class="maintenance-screen__social-link font-mono"
+              class="maintenance-screen__social-link"
             >
               <span>{{ social.label }}</span>
               <span class="maintenance-screen__arrow" aria-hidden="true">↗</span>
@@ -153,7 +113,6 @@ const brand = funkyRootsRepository.getBrandMetadata()
   overflow: hidden;
 }
 
-/* Auras orgánicas con colores del manual de marca */
 .maintenance-screen__auras {
   position: absolute;
   inset: 0;
@@ -222,7 +181,6 @@ const brand = funkyRootsRepository.getBrandMetadata()
   animation: auraFloatPrimary 18s ease-in-out infinite alternate-reverse;
 }
 
-/* Ondas vectoriales animadas */
 .maintenance-screen__waves {
   position: absolute;
   inset: 0;
@@ -260,71 +218,24 @@ const brand = funkyRootsRepository.getBrandMetadata()
   animation: waveDrift2 13s ease-in-out infinite alternate-reverse;
 }
 
-.maintenance-screen__grid-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background-image:
-    linear-gradient(to right, rgba(245, 245, 240, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(245, 245, 240, 0.025) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(circle at 50% 50%, black 35%, transparent 90%);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 35%, transparent 90%);
-}
-
-/* Contenedor Principal */
 .maintenance-screen__container {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: var(--space-8);
+  padding-top: var(--space-12);
   padding-bottom: var(--space-8);
   gap: var(--space-8);
 }
 
-.maintenance-screen__top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--border-dark-subtle);
-  font-size: 0.75rem;
-}
-
-.maintenance-screen__status {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  color: var(--brand-ochre);
-  letter-spacing: 0.1em;
-}
-
-.maintenance-screen__pulse-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--brand-terracotta);
-  box-shadow: 0 0 12px rgba(var(--brand-terracotta-rgb), 0.9);
-  animation: statusBlink 2.2s ease-in-out infinite;
-}
-
-.maintenance-screen__coords {
-  color: var(--brand-beige);
-}
-
-/* Bloque Central */
 .maintenance-screen__center {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: var(--space-6);
-  max-width: 780px;
+  max-width: 740px;
   margin: auto;
   padding: var(--space-8) 0;
 }
@@ -352,33 +263,14 @@ const brand = funkyRootsRepository.getBrandMetadata()
 .maintenance-screen__imagotipo {
   position: relative;
   z-index: 1;
-  width: clamp(220px, 38vw, 380px);
+  width: clamp(210px, 34vw, 340px);
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 8px 28px rgba(20, 22, 21, 0.7));
 }
 
-.maintenance-screen__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-4);
-  background-color: rgba(var(--brand-pine-rgb), 0.28);
-  border: 1px solid rgba(var(--brand-sage-rgb), 0.45);
-  border-radius: 2px;
-  font-size: 0.75rem;
-  color: var(--brand-bone);
-  letter-spacing: 0.12em;
-}
-
-.maintenance-screen__mini-isotipo {
-  height: 16px;
-  width: auto;
-  object-fit: contain;
-}
-
 .maintenance-screen__title {
-  font-size: clamp(2rem, 4.6vw, 3.5rem);
+  font-size: clamp(2rem, 4.4vw, 3.25rem);
   font-weight: 700;
   color: var(--brand-bone);
   letter-spacing: -0.025em;
@@ -387,13 +279,12 @@ const brand = funkyRootsRepository.getBrandMetadata()
 }
 
 .maintenance-screen__subtitle {
-  font-size: clamp(1rem, 1.6vw, 1.1875rem);
-  line-height: 1.65;
-  color: var(--brand-beige);
-  max-width: 56ch;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.6;
+  color: rgba(var(--brand-beige-rgb), 0.88);
+  max-width: 48ch;
 }
 
-/* Ecualizador sutil de ondas */
 .maintenance-screen__eq {
   display: inline-flex;
   align-items: flex-end;
@@ -403,9 +294,9 @@ const brand = funkyRootsRepository.getBrandMetadata()
 }
 
 .eq-bar {
-  width: 3px;
+  width: 4px;
   background: linear-gradient(to top, var(--brand-pine), var(--brand-sage), var(--brand-ochre));
-  border-radius: 2px;
+  border-radius: var(--radius-pill);
   animation: eqBounce 1.6s ease-in-out infinite alternate;
 }
 
@@ -417,27 +308,11 @@ const brand = funkyRootsRepository.getBrandMetadata()
 .eq-bar--6 { height: 22px; animation-delay: 0.4s; }
 .eq-bar--7 { height: 12px; animation-delay: 0.25s; }
 
-/* Footer de canales activos */
 .maintenance-screen__footer {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
+  justify-content: center;
   padding-top: var(--space-6);
-  border-top: 1px solid var(--border-dark-subtle);
-}
-
-@media (min-width: 960px) {
-  .maintenance-screen__footer {
-    flex-direction: row;
-  }
-}
-
-.maintenance-screen__footer-label {
-  font-size: 0.75rem;
-  color: var(--brand-ochre);
-  text-align: center;
 }
 
 .maintenance-screen__socials {
@@ -445,7 +320,7 @@ const brand = funkyRootsRepository.getBrandMetadata()
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .maintenance-screen__social-link {
@@ -453,12 +328,15 @@ const brand = funkyRootsRepository.getBrandMetadata()
   align-items: center;
   gap: var(--space-2);
   min-height: var(--touch-target-min);
-  padding: var(--space-2) var(--space-4);
-  font-size: 0.75rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--brand-bone);
   background-color: rgba(46, 46, 46, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-dark-subtle);
-  border-radius: 2px;
+  border-radius: var(--radius-pill);
   transition:
     background-color var(--duration-fast) var(--ease-editorial),
     border-color var(--duration-fast) var(--ease-editorial),
@@ -466,89 +344,47 @@ const brand = funkyRootsRepository.getBrandMetadata()
 }
 
 .maintenance-screen__social-link:hover {
-  background-color: rgba(var(--brand-pine-rgb), 0.38);
+  background-color: rgba(var(--brand-pine-rgb), 0.45);
   border-color: var(--brand-sage);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .maintenance-screen__arrow {
   color: var(--brand-ochre);
 }
 
-/* Keyframes de Auras y Ondas */
 @keyframes auraFloatPrimary {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100% {
-    transform: translate3d(45px, 30px, 0) scale(1.12);
-  }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(45px, 30px, 0) scale(1.12); }
 }
 
 @keyframes auraFloatSecondary {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100% {
-    transform: translate3d(-50px, -35px, 0) scale(1.15);
-  }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-50px, -35px, 0) scale(1.15); }
 }
 
 @keyframes auraPulseCenter {
-  0% {
-    transform: translate(-50%, -50%) scale(0.92);
-    opacity: 0.65;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1.18);
-    opacity: 1;
-  }
+  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.65; }
+  100% { transform: translate(-50%, -50%) scale(1.18); opacity: 1; }
 }
 
 @keyframes waveDrift1 {
-  0% {
-    transform: translateY(-14px) scaleY(0.94);
-  }
-  100% {
-    transform: translateY(14px) scaleY(1.06);
-  }
+  0% { transform: translateY(-14px) scaleY(0.94); }
+  100% { transform: translateY(14px) scaleY(1.06); }
 }
 
 @keyframes waveDrift2 {
-  0% {
-    transform: translateY(16px) scaleY(1.05);
-  }
-  100% {
-    transform: translateY(-16px) scaleY(0.92);
-  }
+  0% { transform: translateY(16px) scaleY(1.05); }
+  100% { transform: translateY(-16px) scaleY(0.92); }
 }
 
 @keyframes ringBreathe {
-  0% {
-    transform: scale(0.96);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(1.06);
-    opacity: 1;
-  }
-}
-
-@keyframes statusBlink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
+  0% { transform: scale(0.96); opacity: 0.6; }
+  100% { transform: scale(1.06); opacity: 1; }
 }
 
 @keyframes eqBounce {
-  0% {
-    transform: scaleY(0.4);
-  }
-  100% {
-    transform: scaleY(1.15);
-  }
+  0% { transform: scaleY(0.4); }
+  100% { transform: scaleY(1.15); }
 }
 </style>

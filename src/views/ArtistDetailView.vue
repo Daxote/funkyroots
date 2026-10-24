@@ -2,14 +2,13 @@
 import { computed, watchEffect } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { funkyRootsRepository } from '@/core/data/funkyRootsRepository'
-import BaseBadge from '@/components/ui/BaseBadge.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import SectionHeader from '@/components/ui/SectionHeader.vue'
 import YouTubeEmbed from '@/components/ui/YouTubeEmbed.vue'
 
 /**
- * ArtistDetailView — Vista dedicada de artista a pantalla completa (`/artistas/:slug`).
- * - Soporta `labels` múltiples, `role`, `videoId` y `youtubeId` del catálogo real de @FunkyRootsEstudios.
+ * ArtistDetailView — Vista dedicada centrada en el contenido multimedia del artista,
+ * con bordes orgánicos redondeados, sin chips redundantes ni estética técnica.
  */
 const props = defineProps({
   slug: {
@@ -31,7 +30,7 @@ const relatedArtists = computed(() =>
 
 watchEffect(() => {
   if (typeof document !== 'undefined' && artist.value) {
-    document.title = `${artist.value.name} // FunkyRoots Estudios`
+    document.title = `${artist.value.name} — FunkyRoots Estudios`
   }
 })
 
@@ -42,9 +41,8 @@ const goBackToRoster = () => {
 
 <template>
   <div class="artist-detail theme-dark">
-    <!-- Estado Encontrado -->
     <template v-if="artist">
-      <!-- Hero Editorial de Artista a Pantalla Completa -->
+      <!-- Hero Visual Inmersivo -->
       <section class="artist-detail__hero" aria-labelledby="artist-name-heading">
         <div class="artist-detail__hero-backdrop" aria-hidden="true">
           <img
@@ -56,34 +54,21 @@ const goBackToRoster = () => {
         </div>
 
         <div class="container-editorial artist-detail__hero-content">
-          <!-- Barra de Retorno con Preservación de Scroll -->
           <div class="artist-detail__nav-bar">
             <button
               type="button"
-              class="artist-detail__back-btn font-mono"
-              aria-label="Volver al catálogo principal en la posición anterior"
+              class="artist-detail__back-btn"
+              aria-label="Volver al inicio"
               @click="goBackToRoster"
             >
               <span aria-hidden="true">←</span>
-              <span>VOLVER AL ROSTER // INICIO</span>
+              <span>Volver a Artistas</span>
             </button>
-
-            <div class="artist-detail__badges">
-              <BaseBadge variant="ochre">{{ artist.index }}</BaseBadge>
-              <BaseBadge
-                v-for="label in (artist.labels || [artist.labelTag])"
-                :key="label"
-                variant="sage"
-              >
-                {{ label }}
-              </BaseBadge>
-            </div>
           </div>
 
-          <!-- Titular e Identidad Sonora -->
           <div class="artist-detail__hero-main">
-            <p class="font-mono artist-detail__genre">
-              {{ artist.role || artist.genre }} // {{ artist.origin }}
+            <p class="artist-detail__genre">
+              {{ artist.role }} · {{ artist.origin }}
             </p>
 
             <h1 id="artist-name-heading" class="font-display artist-detail__title">
@@ -99,17 +84,15 @@ const goBackToRoster = () => {
                 variant="primary"
                 :href="artist.externalLinks.youtube"
                 target="_blank"
-                :aria-label="`Ver obras de ${artist.name} en YouTube`"
               >
-                VER EN YOUTUBE ↗
+                YouTube ↗
               </BaseButton>
               <BaseButton
                 variant="secondary"
                 :href="artist.externalLinks.spotify"
                 target="_blank"
-                :aria-label="`Escuchar playlist oficial de FunkyRoots en Spotify`"
               >
-                SPOTIFY PLAYLIST ↗
+                Spotify ↗
               </BaseButton>
               <BaseButton
                 v-if="artist.externalLinks.soundcloud"
@@ -117,111 +100,26 @@ const goBackToRoster = () => {
                 :href="artist.externalLinks.soundcloud"
                 target="_blank"
               >
-                SOUNDCLOUD ↗
-              </BaseButton>
-              <BaseButton
-                variant="ghost"
-                href="#sesiones-video"
-              >
-                IR A VIDEOS DESTACADOS ↓
+                SoundCloud ↗
               </BaseButton>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Biografía & Créditos / Colaboraciones -->
-      <section class="artist-detail__bio-section py-24" aria-label="Biografía y créditos">
-        <div class="container-editorial artist-detail__bio-grid gap-8">
-          <div class="artist-detail__narrative">
-            <span class="technical-index artist-detail__section-tag">
-              EXPEDIENTE // PERFIL &amp; CATÁLOGO
-            </span>
-            <h2 class="font-display artist-detail__subtitle">
-              Trayectoria en FunkyRoots Estudios
-            </h2>
-            <div class="artist-detail__paragraphs">
-              <p v-for="(paragraph, idx) in artist.fullBio" :key="idx">
-                {{ paragraph }}
-              </p>
-            </div>
-          </div>
-
-          <aside class="artist-detail__lineup-card p-8" aria-label="Roles y conexiones en el sello">
-            <span class="font-mono artist-detail__card-code">FICHA TÉCNICA // CRÉDITOS &amp; RED</span>
-            <h3 class="font-display artist-detail__card-title">
-              Roles &amp; Colaboraciones
-            </h3>
-            <ul class="artist-detail__lineup-list">
-              <li
-                v-for="member in artist.lineup"
-                :key="member"
-                class="artist-detail__lineup-item"
-              >
-                <span class="font-mono artist-detail__bullet" aria-hidden="true">//</span>
-                <span>{{ member }}</span>
-              </li>
-            </ul>
-          </aside>
-        </div>
-      </section>
-
-      <!-- Álbumes / Producciones en el Sello -->
-      <section class="artist-detail__discography theme-graphite py-24" aria-label="Álbumes y Producciones">
+      <!-- Videos y Sesiones Destacadas (Protagonismo Multimedia) -->
+      <section id="sesiones-video" class="artist-detail__videos py-24" aria-label="Videos destacados">
         <div class="container-editorial">
           <SectionHeader
-            index="ARCHIVO // PRODUCCIONES"
-            title="Álbumes, Cintas de Ritmos & Singles"
-            :subtitle="`Obras producidas, grabadas o editadas junto a ${artist.name} en FunkyRoots Estudios.`"
+            eyebrow="Audiovisual"
+            title="Videos & Sesiones"
             theme="dark"
           />
 
-          <div class="artist-detail__disc-grid gap-8">
-            <article
-              v-for="release in artist.discography"
-              :key="release.id"
-              class="release-card p-6"
-            >
-              <div class="release-card__cover-wrap">
-                <img
-                  :src="release.cover"
-                  :alt="`Portada de ${release.title}`"
-                  class="release-card__cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-
-              <div class="release-card__body">
-                <div class="release-card__badges">
-                  <BaseBadge variant="ochre">{{ release.catalogCode }} · {{ release.year }}</BaseBadge>
-                  <BaseBadge variant="neutral-dark">{{ release.type }}</BaseBadge>
-                </div>
-
-                <h3 class="font-display release-card__title">
-                  {{ release.title }}
-                </h3>
-
-                <p class="font-mono release-card__role">
-                  {{ release.role }}
-                </p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- Videos YouTube Destacados -->
-      <section id="sesiones-video" class="artist-detail__videos py-24" aria-label="Videos de YouTube destacados">
-        <div class="container-editorial">
-          <SectionHeader
-            index="AUDIOVISUAL // YOUTUBE"
-            title="Videos Destacados en @FunkyRootsEstudios"
-            subtitle="Reproduce las obras directamente en esta vista o ábrelas en el canal oficial de YouTube."
-            theme="dark"
-          />
-
-          <div class="artist-detail__video-grid gap-8">
+          <div
+            class="artist-detail__video-grid gap-8"
+            :class="{ 'artist-detail__video-grid--single': artist.videos.length === 1 }"
+          >
             <div
               v-for="video in artist.videos"
               :key="video.id || video.videoId"
@@ -230,21 +128,97 @@ const goBackToRoster = () => {
               <YouTubeEmbed
                 :youtube-id="video.videoId || video.youtubeId"
                 :title="video.title"
-                :tag="`${video.tag || 'YOUTUBE'} // ${video.year}`"
-                :duration="video.duration"
+                :custom-poster="video.poster"
+                show-footer
               />
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Explorar Otros Artistas del Roster -->
+      <!-- Discografía & Lanzamientos -->
+      <section class="artist-detail__discography theme-graphite py-24" aria-label="Discografía">
+        <div class="container-editorial">
+          <SectionHeader
+            eyebrow="Catálogo Fonográfico"
+            title="Álbumes, Beat Tapes & Singles"
+            theme="dark"
+          />
+
+          <div class="artist-detail__disc-grid gap-8">
+            <article
+              v-for="release in artist.discography"
+              :key="release.id"
+              class="release-card"
+            >
+              <div class="release-card__cover-wrap">
+                <img
+                  :src="release.cover"
+                  :alt="release.title"
+                  class="release-card__cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+
+              <div class="release-card__body">
+                <span class="release-card__meta">
+                  {{ release.type }} · {{ release.year }}
+                </span>
+
+                <h3 class="font-display release-card__title">
+                  {{ release.title }}
+                </h3>
+
+                <p class="release-card__role">
+                  {{ release.role }}
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Historia & Colaboradores -->
+      <section class="artist-detail__bio-section py-24" aria-label="Historia y créditos">
+        <div class="container-editorial artist-detail__bio-grid gap-8">
+          <div class="artist-detail__narrative">
+            <span class="eyebrow-label">Biografía</span>
+            <h2 class="font-display artist-detail__subtitle">
+              Sobre {{ artist.name }}
+            </h2>
+            <div class="artist-detail__paragraphs">
+              <p v-for="(paragraph, idx) in artist.fullBio" :key="idx">
+                {{ paragraph }}
+              </p>
+            </div>
+          </div>
+
+          <aside class="artist-detail__lineup-card" aria-label="Créditos y colaboraciones">
+            <h3 class="font-display artist-detail__card-title">
+              Créditos &amp; Conexiones
+            </h3>
+            <ul class="artist-detail__lineup-list">
+              <li
+                v-for="member in artist.lineup"
+                :key="member"
+                class="artist-detail__lineup-item"
+              >
+                <span class="artist-detail__dot" aria-hidden="true"></span>
+                <span>{{ member }}</span>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Otros Artistas (Tarjetas Visuales) -->
       <section class="artist-detail__more py-16" aria-label="Otros artistas del sello">
         <div class="container-editorial">
           <div class="artist-detail__more-header">
-            <span class="font-mono artist-detail__section-tag">CONTINUAR EXPLORACIÓN // ROSTER</span>
+            <h2 class="font-display artist-detail__more-heading">Más Artistas</h2>
             <BaseButton variant="ghost" to="/test">
-              ← VOLVER A LA PORTADA PRINCIPAL
+              ← Volver al Inicio
             </BaseButton>
           </div>
 
@@ -253,29 +227,36 @@ const goBackToRoster = () => {
               v-for="other in relatedArtists"
               :key="other.id"
               :to="`/test/artistas/${other.slug}`"
-              class="artist-detail__more-card p-6"
+              class="artist-detail__more-card"
             >
-              <span class="font-mono artist-detail__more-code">{{ other.index }}</span>
-              <strong class="font-display artist-detail__more-name">{{ other.name }}</strong>
-              <span class="font-mono artist-detail__more-genre">{{ other.role || other.genre }}</span>
+              <img
+                :src="other.coverImage"
+                :alt="other.name"
+                class="artist-detail__more-img"
+                loading="lazy"
+              />
+              <div class="artist-detail__more-scrim" aria-hidden="true"></div>
+              <div class="artist-detail__more-info">
+                <strong class="font-display artist-detail__more-name">{{ other.name }}</strong>
+                <span class="artist-detail__more-genre">{{ other.role }}</span>
+              </div>
             </RouterLink>
           </div>
         </div>
       </section>
     </template>
 
-    <!-- Estado 404 de Artista no encontrado -->
+    <!-- Estado 404 -->
     <section v-else class="container-editorial py-24 artist-detail__not-found">
-      <BaseBadge variant="ochre">ERROR 404 // ARCHIVO NO ENCONTRADO</BaseBadge>
       <h1 class="font-display artist-detail__title">
-        No encontramos el expediente solicitado.
+        Artista no encontrado
       </h1>
       <p class="artist-detail__lead">
-        Verifica la dirección o regresa al catálogo principal de artistas de FunkyRoots Estudios.
+        Regresa al catálogo principal para explorar los proyectos de FunkyRoots Estudios.
       </p>
       <div>
         <BaseButton variant="primary" to="/test">
-          VOLVER AL INICIO
+          Volver al Inicio
         </BaseButton>
       </div>
     </section>
@@ -290,10 +271,9 @@ const goBackToRoster = () => {
 
 .artist-detail__hero {
   position: relative;
-  min-height: 86vh;
+  min-height: 82vh;
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid var(--border-dark-subtle);
   overflow: hidden;
 }
 
@@ -307,7 +287,7 @@ const goBackToRoster = () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.85) contrast(1.08);
+  filter: saturate(0.92) contrast(1.06);
 }
 
 .artist-detail__hero-scrim {
@@ -315,8 +295,8 @@ const goBackToRoster = () => {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(20, 22, 21, 0.88) 0%,
-    rgba(20, 22, 21, 0.65) 45%,
+    rgba(20, 22, 21, 0.55) 0%,
+    rgba(20, 22, 21, 0.48) 45%,
     rgba(20, 22, 21, 0.98) 100%
   );
 }
@@ -334,194 +314,124 @@ const goBackToRoster = () => {
 
 .artist-detail__nav-bar {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--border-dark-subtle);
 }
 
 .artist-detail__back-btn {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   min-height: var(--touch-target-min);
-  padding: var(--space-2) var(--space-4);
-  font-size: 0.75rem;
-  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--brand-bone);
-  background-color: rgba(46, 46, 46, 0.65);
+  background-color: rgba(20, 22, 21, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-dark-strong);
-  border-radius: 2px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
   transition:
     background-color var(--duration-fast) var(--ease-editorial),
-    border-color var(--duration-fast) var(--ease-editorial);
+    border-color var(--duration-fast) var(--ease-editorial),
+    transform var(--duration-fast) var(--ease-editorial);
 }
 
 .artist-detail__back-btn:hover {
   background-color: var(--brand-pine);
   border-color: var(--brand-sage);
-}
-
-.artist-detail__badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
+  transform: translateX(-3px);
 }
 
 .artist-detail__hero-main {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-  max-width: 860px;
+  gap: var(--space-4);
+  max-width: 820px;
   margin-top: auto;
 }
 
 .artist-detail__genre {
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: var(--brand-ochre);
 }
 
 .artist-detail__title {
-  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-size: clamp(2.5rem, 5.2vw, 4.25rem);
   font-weight: 700;
   color: var(--brand-bone);
 }
 
 .artist-detail__lead {
   font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
-  line-height: 1.65;
-  color: var(--brand-beige);
-  max-width: 64ch;
+  line-height: 1.6;
+  color: rgba(var(--brand-beige-rgb), 0.9);
+  max-width: 60ch;
 }
 
 .artist-detail__external-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
-  padding-top: var(--space-2);
+  gap: var(--space-3);
+  padding-top: var(--space-3);
 }
 
-.artist-detail__bio-section {
-  border-bottom: 1px solid var(--border-dark-subtle);
-}
-
-.artist-detail__bio-grid {
+.artist-detail__video-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
 }
 
 @media (min-width: 960px) {
-  .artist-detail__bio-grid {
-    grid-template-columns: 1.35fr 0.85fr;
+  .artist-detail__video-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
 
-.artist-detail__narrative {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-.artist-detail__section-tag {
-  color: var(--brand-ochre);
-}
-
-.artist-detail__subtitle {
-  font-size: clamp(1.5rem, 2.6vw, 2.125rem);
-  font-weight: 600;
-  color: var(--brand-bone);
-}
-
-.artist-detail__paragraphs {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  font-size: 1.0625rem;
-  line-height: 1.75;
-  color: var(--brand-beige);
-}
-
-.artist-detail__lineup-card {
-  background-color: var(--brand-graphite);
-  border: 1px solid var(--border-dark-subtle);
-  border-top: 3px solid var(--brand-pine);
-  border-radius: 2px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.artist-detail__card-code {
-  font-size: 0.75rem;
-  color: var(--brand-ochre);
-}
-
-.artist-detail__card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--brand-bone);
-}
-
-.artist-detail__lineup-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding-top: var(--space-2);
-}
-
-.artist-detail__lineup-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-  font-size: 0.9375rem;
-  color: var(--brand-bone);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--border-dark-subtle);
-}
-
-.artist-detail__bullet {
-  color: var(--brand-sage);
-}
-
-.artist-detail__discography {
-  border-bottom: 1px solid var(--border-dark-subtle);
+  .artist-detail__video-grid--single {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 960px;
+  }
 }
 
 .artist-detail__disc-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
 }
 
 @media (min-width: 768px) {
   .artist-detail__disc-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 .release-card {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-6);
+  padding: var(--space-6);
   background-color: var(--brand-dark);
   border: 1px solid var(--border-dark-subtle);
-  border-radius: 2px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
   align-items: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 @media (min-width: 640px) {
   .release-card {
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 150px minmax(0, 1fr);
   }
 }
 
 .release-card__cover-wrap {
   aspect-ratio: 1 / 1;
   background-color: var(--brand-graphite);
-  border: 1px solid var(--border-dark-subtle);
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 
@@ -534,40 +444,103 @@ const goBackToRoster = () => {
 .release-card__body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
-.release-card__badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+.release-card__meta {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--brand-ochre);
 }
 
 .release-card__title {
   font-size: 1.375rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--brand-bone);
 }
 
 .release-card__role {
-  font-size: 0.75rem;
-  color: var(--brand-sage);
+  font-size: 0.9375rem;
+  color: rgba(var(--brand-beige-rgb), 0.82);
   line-height: 1.5;
 }
 
-.artist-detail__videos {
-  border-bottom: 1px solid var(--border-dark-subtle);
-}
-
-.artist-detail__video-grid {
+.artist-detail__bio-grid {
   display: grid;
   grid-template-columns: 1fr;
+  align-items: start;
 }
 
 @media (min-width: 960px) {
-  .artist-detail__video-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .artist-detail__bio-grid {
+    grid-template-columns: 1.3fr 0.9fr;
   }
+}
+
+.artist-detail__narrative {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.artist-detail__subtitle {
+  font-size: clamp(1.625rem, 2.6vw, 2.125rem);
+  font-weight: 700;
+  color: var(--brand-bone);
+}
+
+.artist-detail__paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: rgba(var(--brand-beige-rgb), 0.88);
+}
+
+.artist-detail__lineup-card {
+  padding: var(--space-8);
+  background-color: var(--brand-graphite);
+  border: 1px solid var(--border-dark-subtle);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.artist-detail__card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--brand-bone);
+}
+
+.artist-detail__lineup-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.artist-detail__lineup-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.9375rem;
+  color: var(--brand-bone);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-dark-subtle);
+}
+
+.artist-detail__lineup-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.artist-detail__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--brand-sage);
+  flex-shrink: 0;
 }
 
 .artist-detail__more-header {
@@ -579,25 +552,37 @@ const goBackToRoster = () => {
   margin-bottom: var(--space-6);
 }
 
+.artist-detail__more-heading {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--brand-bone);
+}
+
 .artist-detail__more-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
 }
 
 @media (min-width: 768px) {
   .artist-detail__more-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 .artist-detail__more-card {
+  position: relative;
+  aspect-ratio: 16 / 10;
   display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  min-height: var(--touch-target-min);
+  align-items: flex-end;
+  padding: var(--space-6);
   background-color: var(--brand-graphite);
   border: 1px solid var(--border-dark-subtle);
-  border-radius: 2px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   transition:
     border-color var(--duration-fast) var(--ease-editorial),
     transform var(--duration-fast) var(--ease-editorial);
@@ -605,12 +590,38 @@ const goBackToRoster = () => {
 
 .artist-detail__more-card:hover {
   border-color: var(--brand-sage);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
-.artist-detail__more-code {
-  font-size: 0.75rem;
-  color: var(--brand-ochre);
+.artist-detail__more-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-editorial);
+}
+
+.artist-detail__more-card:hover .artist-detail__more-img {
+  transform: scale(1.06);
+}
+
+.artist-detail__more-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 22, 21, 0.1) 0%,
+    rgba(20, 22, 21, 0.88) 100%
+  );
+}
+
+.artist-detail__more-info {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
 .artist-detail__more-name {
@@ -619,8 +630,8 @@ const goBackToRoster = () => {
 }
 
 .artist-detail__more-genre {
-  font-size: 0.75rem;
-  color: var(--brand-beige);
+  font-size: 0.8125rem;
+  color: var(--brand-ochre);
 }
 
 .artist-detail__not-found {
